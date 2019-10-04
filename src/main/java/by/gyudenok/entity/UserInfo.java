@@ -1,15 +1,25 @@
-package by.gyudenok.domain;
+package by.gyudenok.entity;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class UserInfo {
     private String mAvatarLink;
     private String mId;
     private String mName;
     private String mSurname;
-    private Date mDateOfBirth;
+    private Calendar mDateOfBirth;
     private String mPhoneNumber;
     private Gender mGender;
+
+    public UserInfo(String avatarLink, String id, String name, String surname, Calendar dateOfBirth, String phoneNumber, Gender gender) {
+        mAvatarLink = avatarLink;
+        mId = id;
+        mName = name;
+        mSurname = surname;
+        mDateOfBirth = dateOfBirth;
+        mPhoneNumber = phoneNumber;
+        mGender = gender;
+    }
 
     public String getAvatarLink() {
         return mAvatarLink;
@@ -43,11 +53,11 @@ public class UserInfo {
         mSurname = surname;
     }
 
-    public Date getDateOfBirth() {
+    public Calendar getDateOfBirth() {
         return mDateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(Calendar dateOfBirth) {
         mDateOfBirth = dateOfBirth;
     }
 
