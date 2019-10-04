@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface UserDao extends Dao<User> {
     List<User> readAll() throws SQLException;
+    User readByLogin(String login) throws SQLException;
 }
