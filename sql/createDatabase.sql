@@ -1,1 +1,2 @@
 CREATE DATABASE IF NOT EXISTS laserhairremovalstudiodb DEFAULT CHAR SET UTF8;
+SET GLOBAL time_zone = '+3:00';
