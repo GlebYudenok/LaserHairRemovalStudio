@@ -40,6 +40,7 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
         }else {
             LOGGER.info("ComplexService was created successfully!");
         }
+        ps.close();
         return ex;
     }
 
@@ -66,6 +67,8 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
                 serviceList.add(resultSet.getString("service_id"));
             } while (resultSet.next());
             service.setServiceIds(serviceList);
+            resultSet.close();
+            ps.close();
        return service;
     }
 
@@ -90,6 +93,7 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
         }else {
             LOGGER.warn("Complex not found or can't update!");
         }
+        ps.close();
         return code;
     }
 
@@ -104,6 +108,7 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
         } else {
             LOGGER.warn("Complex not found or can't delete!");
         }
+        ps.close();
         return code;
     }
 }

@@ -32,6 +32,7 @@ public class SqlPictureDaoImpl implements Dao<Picture> {
         }else {
             LOGGER.info("Picture was inserted successfully!");
         }
+        ps.close();
         return ex;
     }
 
@@ -48,7 +49,8 @@ public class SqlPictureDaoImpl implements Dao<Picture> {
             picture.setId(resultSet.getString("id"));
             picture.setLink(resultSet.getString("link"));
         }
-
+        resultSet.close();
+        ps.close();
         return picture;
     }
 
@@ -65,6 +67,7 @@ public class SqlPictureDaoImpl implements Dao<Picture> {
         }else {
             LOGGER.warn("Picture not found or can't update!");
         }
+        ps.close();
         return code;
     }
 
@@ -80,6 +83,7 @@ public class SqlPictureDaoImpl implements Dao<Picture> {
         }else {
             LOGGER.warn("Picture not fount or can't delete!");
         }
+        ps.close();
         return code;
     }
 }

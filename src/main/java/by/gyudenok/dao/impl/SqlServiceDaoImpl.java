@@ -34,6 +34,7 @@ public class SqlServiceDaoImpl implements Dao<Service> {
         }else {
             LOGGER.info("Service was created successfully!");
         }
+        ps.close();
         return ex;
     }
 
@@ -50,6 +51,8 @@ public class SqlServiceDaoImpl implements Dao<Service> {
             service.setPrice(resultSet.getBigDecimal("price"));
             service.setZoneName(resultSet.getString("zone_name"));
         }
+        resultSet.close();
+        statement.close();
         return service;
     }
 
@@ -66,6 +69,7 @@ public class SqlServiceDaoImpl implements Dao<Service> {
         }else {
             LOGGER.info("Service not found or can't update!");
         }
+        ps.close();
         return code;
     }
 
@@ -82,6 +86,7 @@ public class SqlServiceDaoImpl implements Dao<Service> {
         } else {
             LOGGER.warn("Service not found or can't delete!");
         }
+        ps.close();
         return code;
     }
 }

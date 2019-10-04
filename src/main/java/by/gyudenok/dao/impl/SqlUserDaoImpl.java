@@ -41,6 +41,7 @@ public class SqlUserDaoImpl implements UserDao {
         }else {
             LOGGER.info("User was created successfully!");
         }
+        ps.close();
         return ex;
     }
 
@@ -64,6 +65,8 @@ public class SqlUserDaoImpl implements UserDao {
                     Role.valueOf(resultSet.getString("role").toUpperCase())
             );
         }
+        preparedStatement.close();
+        resultSet.close();
         return user;
     }
 
@@ -82,6 +85,7 @@ public class SqlUserDaoImpl implements UserDao {
         }else {
             LOGGER.warn("User was not found or can't update!");
         }
+        ps.close();
         return code;
     }
 
@@ -99,6 +103,7 @@ public class SqlUserDaoImpl implements UserDao {
         } else {
             LOGGER.warn("User not found or can't delete!");
         }
+        ps.close();
         return code;
     }
 
@@ -126,6 +131,8 @@ public class SqlUserDaoImpl implements UserDao {
                  )
             );
         }
+        resultSet.close();
+        statement.close();
         return userList;
     }
 
@@ -145,6 +152,8 @@ public class SqlUserDaoImpl implements UserDao {
                     Role.valueOf(resultSet.getString("role"))
             );
         }
+        resultSet.close();
+        ps.close();
         return user;
     }
 }

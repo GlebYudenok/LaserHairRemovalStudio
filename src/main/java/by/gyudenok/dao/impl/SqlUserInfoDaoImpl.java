@@ -43,6 +43,7 @@ public class SqlUserInfoDaoImpl implements Dao<UserInfo> {
         }else {
             LOGGER.info("User info was inserted successfully!");
         }
+        ps.close();
         return ex;
     }
 
@@ -70,6 +71,8 @@ public class SqlUserInfoDaoImpl implements Dao<UserInfo> {
                     Gender.valueOf(resultSet.getString("gender").toUpperCase())
             );
         }
+        resultSet.close();
+        ps.close();
         return userInfo;
     }
 
@@ -91,6 +94,7 @@ public class SqlUserInfoDaoImpl implements Dao<UserInfo> {
         }else {
             LOGGER.warn("User info not found or can't update!");
         }
+        ps.close();
         return code;
     }
 
@@ -105,6 +109,7 @@ public class SqlUserInfoDaoImpl implements Dao<UserInfo> {
         } else {
             LOGGER.warn("User info not found or can't delete!");
         }
+        ps.close();
         return code;
     }
 }

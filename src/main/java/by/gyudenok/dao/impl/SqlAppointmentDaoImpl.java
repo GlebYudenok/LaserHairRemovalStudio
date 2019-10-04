@@ -40,6 +40,7 @@ public class SqlAppointmentDaoImpl implements Dao<Appointment> {
         }else {
             LOGGER.info("Appointment was created successfully!");
         }
+        ps.close();
         return ex;
     }
 
@@ -67,7 +68,8 @@ public class SqlAppointmentDaoImpl implements Dao<Appointment> {
                     resultSet.getString("complex_id")
             );
         }
-
+        resultSet.close();
+        preparedStatement.close();
         return appointment;
     }
 
@@ -82,13 +84,14 @@ public class SqlAppointmentDaoImpl implements Dao<Appointment> {
         ps.setString(2, appointment.getUserId());
         ps.setString(3, appointment.getServiceId());
         ps.setString(4, appointment.getComplexId());
-ps.setString(5,appointment.getId());
+        ps.setString(5,appointment.getId());
         int code = ps.executeUpdate();
         if(code > 0) {
             LOGGER.info("Appointment was update successfully!");
         } else {
             LOGGER.warn("Appointment not found or can't update!");
         }
+        ps.close();
         return code;
     }
 
@@ -103,6 +106,7 @@ ps.setString(5,appointment.getId());
         }else {
             LOGGER.warn("Appointment not found or can't delete!");
         }
+        statement.close();
         return code;
     }
 }
