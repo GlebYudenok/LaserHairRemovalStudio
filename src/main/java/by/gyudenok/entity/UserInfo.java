@@ -4,16 +4,16 @@ import java.util.Calendar;
 
 public class UserInfo {
     private String mAvatarLink;
-    private String mId;
+    private String mUserId;
     private String mName;
     private String mSurname;
     private Calendar mDateOfBirth;
     private String mPhoneNumber;
     private Gender mGender;
 
-    public UserInfo(String avatarLink, String id, String name, String surname, Calendar dateOfBirth, String phoneNumber, Gender gender) {
+    public UserInfo(String avatarLink, String userId, String name, String surname, Calendar dateOfBirth, String phoneNumber, Gender gender) {
         mAvatarLink = avatarLink;
-        mId = id;
+        mUserId = userId;
         mName = name;
         mSurname = surname;
         mDateOfBirth = dateOfBirth;
@@ -29,12 +29,12 @@ public class UserInfo {
         mAvatarLink = avatarLink;
     }
 
-    public String getId() {
-        return mId;
+    public String getUserId() {
+        return mUserId;
     }
 
-    public void setId(String id) {
-        mId = id;
+    public void setUserId(String userId) {
+        mUserId = userId;
     }
 
     public String getName() {
@@ -82,7 +82,7 @@ public class UserInfo {
     public String toString() {
         return "UserInfo{" +
                 "mAvatarLink='" + mAvatarLink + '\'' +
-                ", mId='" + mId + '\'' +
+                ", mId='" + mUserId + '\'' +
                 ", mName='" + mName + '\'' +
                 ", mSurname='" + mSurname + '\'' +
                 ", mDateOfBirth=" + mDateOfBirth +
