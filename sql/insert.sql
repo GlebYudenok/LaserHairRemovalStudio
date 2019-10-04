@@ -61,10 +61,10 @@ INSERT INTO complex_service (id, service_id, name, price, user_gender) VALUES
 ('3', '12', 'NewYork', '135', 'male'),
 ('3', '15', 'NewYork', '135', 'male');
 
-INSERT INTO appointment (date_n_time, user_id, complex_id) VALUES
-('2019-06-09 17:30:00', '1', '1'),
-('2019-06-09 18:15', '2', '3');
+INSERT INTO appointment (id, date_n_time, user_id, complex_id) VALUES
+('1', '2019-06-09 17:30:00', '1', '1'),
+('2', '2019-06-09 18:15', '2', '3');
 
-INSERT INTO appointment (date_n_time, user_id, service_id) VALUES
-('2019-07-09 12:00', '2', '2');
+INSERT INTO appointment (id, date_n_time, user_id, service_id) VALUES
+('3', '2019-07-09 12:00', '1', '2');
 
