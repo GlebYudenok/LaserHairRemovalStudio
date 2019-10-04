@@ -2,7 +2,6 @@ package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.ConnectionPool;
 import by.gyudenok.dao.UserDao;
-import by.gyudenok.entity.Appointment;
 import by.gyudenok.entity.Role;
 import by.gyudenok.entity.User;
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +23,7 @@ public class SqlUserDaoImpl implements UserDao {
     private static final String SQL_DELETE_BY_ID_QUERY = new String("DELETE FROM USER WHERE id=?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE USER SET " +
             "login=?, password=?, email=?, role=? WHERE id=?");
+    private static final String SQL_READ_BY_LOGIN_QUERY = new String("SELECT *FROM USER WHERE login=?");
 
     @Override
     public boolean create(User user) throws SQLException {
@@ -127,5 +127,24 @@ public class SqlUserDaoImpl implements UserDao {
             );
         }
         return userList;
+    }
+
+    @Override
+    public User readByLogin(String login) throws SQLException {
+        PreparedStatement ps = ConnectionPool.getInstance()
+                .getConnection().prepareStatement(SQL_READ_BY_LOGIN_QUERY);
+        ps.setString(1, login);
+        ResultSet resultSet = ps.executeQuery();
+        User user = null;
+        if(resultSet.next()) {
+            user = new User(
+                    resultSet.getString("id"),
+                    resultSet.getString("login"),
+                    resultSet.getString("password"),
+                    resultSet.getString("email"),
+                    Role.valueOf(resultSet.getString("role"))
+            );
+        }
+        return user;
     }
 }
