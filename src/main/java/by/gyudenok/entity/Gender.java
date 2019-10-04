@@ -1,4 +1,4 @@
-package by.gyudenok.domain;
+package by.gyudenok.entity;
 
 public enum Gender {
     MALE("male"),

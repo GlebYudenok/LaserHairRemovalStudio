@@ -1,4 +1,4 @@
-package by.gyudenok.domain;
+package by.gyudenok.entity;
 
 import java.math.BigDecimal;
 

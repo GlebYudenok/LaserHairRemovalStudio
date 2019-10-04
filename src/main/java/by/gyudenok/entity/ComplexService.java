@@ -1,4 +1,4 @@
-package by.gyudenok.domain;
+package by.gyudenok.entity;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -11,6 +11,13 @@ public class ComplexService {
     private List<String> mServiceIds;
 
     public ComplexService() {
+    }
+
+    public ComplexService(String id, String complexName, Gender gender, BigDecimal price) {
+        mId = id;
+        mComplexName = complexName;
+        mGender = gender;
+        this.price = price;
     }
 
     public String getId() {

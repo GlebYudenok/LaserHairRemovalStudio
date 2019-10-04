@@ -1,4 +1,4 @@
-package by.gyudenok.domain;
+package by.gyudenok.entity;
 
 public class Picture {
     private String mId;
