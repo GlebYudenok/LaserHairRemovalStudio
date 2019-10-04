@@ -17,14 +17,33 @@ import java.util.Date;
 public class SqlUserInfoDaoImpl implements Dao<UserInfo> {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlUserInfoDaoImpl.class);
+    private static final String SQL_INSERT_QUERY = new String("INSERT INTO USER_INFO " +
+            "(user_id,name,surname,avatar_link,birth_date,phone_number,gender) VALUES (?,?,?,?,?,?,?)");
     private static final String SQL_READ_BY_ID_QUERY = new String("SELECT *FROM USER_INFO WHERE USER_ID = ?");
     private static final String SQL_DELETE_BY_ID_QUERY = new String("DELETE FROM USER_INFO WHERE USER_ID = ?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE USER_INFO SET name=?," +
             "surname=?, avatar_link=?, birth_date=?, phone_number=?, gender=? WHERE user_id=?");
 
     @Override
-    public void create() {
+    public boolean create(UserInfo userInfo) throws SQLException {
+        PreparedStatement ps = ConnectionPool.getInstance()
+                .getConnection().prepareStatement(SQL_INSERT_QUERY);
+        ps.setString(1, userInfo.getUserId());
+        ps.setString(2, userInfo.getName());
+        ps.setString(3, userInfo.getSurname());
+        ps.setString(4, userInfo.getAvatarLink());
+        Timestamp timestamp = new Timestamp(userInfo.getDateOfBirth().getTime().getTime());
+        ps.setTimestamp(5, timestamp);
+        ps.setString(6, userInfo.getPhoneNumber());
+        ps.setString(7, userInfo.getGender().name());
 
+        boolean ex = ps.execute();
+        if(ex == false) {
+            LOGGER.warn("Cannot insert user info");
+        }else {
+            LOGGER.info("User info was inserted successfully!");
+        }
+        return ex;
     }
 
     @Override
@@ -65,7 +84,7 @@ public class SqlUserInfoDaoImpl implements Dao<UserInfo> {
         ps.setTimestamp(4, ts);
         ps.setString(5, userInfo.getPhoneNumber());
         ps.setString(6, userInfo.getGender().name());
-        ps.setString(7, userInfo.getId());
+        ps.setString(7, userInfo.getUserId());
         int code = ps.executeUpdate();
         if(code > 0) {
             LOGGER.info("User info was update successfully!");

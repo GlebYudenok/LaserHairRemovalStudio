@@ -1,5 +1,6 @@
 package by.gyudenok.dao.impl;
 
+import by.gyudenok.dao.ComplexServiceDao;
 import by.gyudenok.dao.ConnectionPool;
 import by.gyudenok.entity.ComplexService;
 import by.gyudenok.entity.Gender;
@@ -16,14 +17,30 @@ import java.util.List;
 public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexService> {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlComplexServiceDaoImpl.class);
+    private static final String SQL_INSERT_QUERY = new String("INSERT INTO COMPLEX_SERVICE (id, service_id, price, name, user_gender) " +
+            "VALUES (?,?,?,?,?)");
     private static final String SQL_READ_BY_ID_QUERY = new String("SELECT *FROM COMPLEX_SERVICE WHERE id=?");
     private static final String SQL_DELETE_BY_ID_QUERY = new String("DELETE FROM COMPLEX_SERVICE WHERE id=?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE complex_service SET service_id=?, " +
             "price=?, name=?, user_gender=? WHERE id=? and service_id=?");
 
     @Override
-    public void create() throws ClassNotFoundException, SQLException {
+    public boolean create(ComplexService complexService) throws ClassNotFoundException, SQLException {
+        PreparedStatement ps = ConnectionPool.getInstance()
+                .getConnection().prepareStatement(SQL_INSERT_QUERY);
+        ps.setString(1, complexService.getId());
+        ps.setString(2, complexService.getServiceIds().get(0));
+        ps.setBigDecimal(3, complexService.getPrice());
+        ps.setString(4, complexService.getComplexName());
+        ps.setString(5, complexService.getGender().name());
 
+        boolean ex = ps.execute();
+        if(ex == false) {
+            LOGGER.warn("Cannot create ComplexService");
+        }else {
+            LOGGER.info("ComplexService was created successfully!");
+        }
+        return ex;
     }
 
     @Override

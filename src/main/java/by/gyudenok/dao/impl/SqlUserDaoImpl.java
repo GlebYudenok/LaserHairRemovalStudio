@@ -2,6 +2,7 @@ package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.ConnectionPool;
 import by.gyudenok.dao.UserDao;
+import by.gyudenok.entity.Appointment;
 import by.gyudenok.entity.Role;
 import by.gyudenok.entity.User;
 import org.apache.logging.log4j.LogManager;
@@ -17,13 +18,30 @@ import java.util.List;
 public class SqlUserDaoImpl implements UserDao {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlUserDaoImpl.class);
+    private static final String SQL_INSERT_QUERY = new String("INSERT INTO USER " +
+            "(id,login,password,email,role) VALUES (?,?,?,?,?)");
     private static final String SQL_READ_BY_ID_QUERY = new String("SELECT *FROM USER WHERE id=?");
     private static final String SQL_DELETE_BY_ID_QUERY = new String("DELETE FROM USER WHERE id=?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE USER SET " +
             "login=?, password=?, email=?, role=? WHERE id=?");
 
-    public void create() {
+    @Override
+    public boolean create(User user) throws SQLException {
+        PreparedStatement ps = ConnectionPool.getInstance()
+                .getConnection().prepareStatement(SQL_INSERT_QUERY);
+        ps.setString(1, user.getId());
+        ps.setString(2, user.getLogin());
+        ps.setString(3, user.getPassword());
+        ps.setString(4, user.getEmail());
+        ps.setString(5, user.getRole().name());
 
+        boolean ex = ps.execute();
+        if(ex == false) {
+            LOGGER.warn("Cannot create user");
+        }else {
+            LOGGER.info("User was created successfully!");
+        }
+        return ex;
     }
 
     @Override

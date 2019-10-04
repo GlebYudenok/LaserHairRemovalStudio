@@ -18,6 +18,9 @@ import java.util.TimeZone;
 public class SqlAppointmentDaoImpl implements Dao<Appointment> {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlAppointmentDaoImpl.class);
+    private static final String SQL_INSERT_QUERY = new String("INSERT INTO APPOINTMENT (id, date_n_time," +
+            "user_id, service_id, complex_id) VALUES (" +
+            "?,?,?,?,?)");
     private static final String SQL_READ_BY_ID_QUERY = new String("SELECT *FROM APPOINTMENT WHERE id=?");
     private static final String SQL_DELETE_BY_ID_QUERY = new String("DELETE FROM APPOINTMENT WHERE user_id=?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE APPOINTMENT SET " +
@@ -29,8 +32,22 @@ public class SqlAppointmentDaoImpl implements Dao<Appointment> {
     }
 
     @Override
-    public void create() throws ClassNotFoundException, SQLException {
-
+    public boolean create(Appointment appointment) throws ClassNotFoundException, SQLException {
+        PreparedStatement ps = ConnectionPool.getInstance()
+                .getConnection().prepareStatement(SQL_INSERT_QUERY);
+        ps.setString(1, appointment.getId());
+        Timestamp timestamp = new Timestamp(appointment.getsDateOfMeet().getTime().getTime());
+        ps.setTimestamp(2, timestamp);
+        ps.setString(3, appointment.getUserId());
+        ps.setString(4, appointment.getServiceId());
+        ps.setString(5, appointment.getComplexId());
+        boolean ex = ps.execute();
+        if(ex == false) {
+            LOGGER.warn("Cannot insert data");
+        }else {
+            LOGGER.info("Appointment was created successfully!");
+        }
+        return ex;
     }
 
     @Override

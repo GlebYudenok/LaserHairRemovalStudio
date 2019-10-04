@@ -14,13 +14,25 @@ import java.sql.SQLException;
 public class SqlPictureDaoImpl implements Dao<Picture> {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlPictureDaoImpl.class);
+    private static final String SQL_INSERT_QUERY = new String("INSERT INTO PICTURES" +
+            "(id,link) VALUES (?,?)");
     private static final String SQL_READ_BY_ID_QUERY = new String("SELECT *FROM PICTURES WHERE id=?");
     private static final String SQL_DELETE_BY_ID_QUERY = new String("DEKETE FROM PICTURES WHERE id=?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE PICTURES SET link=? WHERE id=?");
 
     @Override
-    public void create() throws ClassNotFoundException, SQLException {
-
+    public boolean create(Picture picture) throws ClassNotFoundException, SQLException {
+        PreparedStatement ps = ConnectionPool.getInstance()
+                .getConnection().prepareStatement(SQL_INSERT_QUERY);
+        ps.setString(1, picture.getId());
+        ps.setString(2, picture.getLink());
+        boolean ex = ps.execute();
+        if(ex == false) {
+            LOGGER.warn("Cannot insert picture");
+        }else {
+            LOGGER.info("Picture was inserted successfully!");
+        }
+        return ex;
     }
 
     @Override
