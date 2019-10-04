@@ -7,44 +7,48 @@ public class SqlDaoFactory {
     private static final SqlDaoFactory instance =
             new SqlDaoFactory();
 
-    private final SqlAppointmentDao mSqlAppointmentDao =
-            new SqlAppointmentDao();
-    private final SqlComplexServiceDao mSqlComplexServiceDao =
-            new SqlComplexServiceDao();
-    private final SqlPictureDao mSqlPictureDao =
-            new SqlPictureDao();
-    private final SqlServiceDao mSqlServiceDao =
-            new SqlServiceDao();
-    private final SqlUserDao mSqlUserDao =
-            new SqlUserDao();
-    private final SqlUserInfoDao mSqlUserInfoDao =
-            new SqlUserInfoDao();
+    private SqlDaoFactory() {
+
+    }
+
+    private final SqlAppointmentDaoImpl mSqlAppointmentDao =
+            new SqlAppointmentDaoImpl();
+    private final SqlComplexServiceDaoImpl mSqlComplexServiceDao =
+            new SqlComplexServiceDaoImpl();
+    private final SqlPictureDaoImpl mSqlPictureDao =
+            new SqlPictureDaoImpl();
+    private final SqlServiceDaoImpl mSqlServiceDao =
+            new SqlServiceDaoImpl();
+    private final SqlUserDaoImpl mSqlUserDao =
+            new SqlUserDaoImpl();
+    private final SqlUserInfoDaoImpl mSqlUserInfoDao =
+            new SqlUserInfoDaoImpl();
 
     public static SqlDaoFactory getInstance() {
         return instance;
     }
 
-    public SqlAppointmentDao getSqlAppointmentDao() {
+    public SqlAppointmentDaoImpl getSqlAppointmentDao() {
         return mSqlAppointmentDao;
     }
 
-    public SqlComplexServiceDao getSqlComplexServiceDao() {
+    public SqlComplexServiceDaoImpl getSqlComplexServiceDao() {
         return mSqlComplexServiceDao;
     }
 
-    public SqlPictureDao getSqlPictureDao() {
+    public SqlPictureDaoImpl getSqlPictureDao() {
         return mSqlPictureDao;
     }
 
-    public SqlServiceDao getSqlServiceDao() {
+    public SqlServiceDaoImpl getSqlServiceDao() {
         return mSqlServiceDao;
     }
 
-    public SqlUserDao getSqlUserDao() {
+    public SqlUserDaoImpl getSqlUserDao() {
         return mSqlUserDao;
     }
 
-    public SqlUserInfoDao getSqlUserInfoDao() {
+    public SqlUserInfoDaoImpl getSqlUserInfoDao() {
         return mSqlUserInfoDao;
-    }
-}
+    }}
+

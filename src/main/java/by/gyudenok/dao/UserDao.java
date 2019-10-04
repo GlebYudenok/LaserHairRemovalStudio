@@ -1,8 +1,10 @@
 package by.gyudenok.dao;
 
-import by.gyudenok.domain.User;
+import by.gyudenok.entity.User;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public interface UserDao extends Dao<User> {
-    void registration();
-    void signIn();
+    List<User> readAll() throws SQLException;
 }
