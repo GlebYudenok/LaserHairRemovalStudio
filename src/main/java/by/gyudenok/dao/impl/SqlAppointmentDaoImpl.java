@@ -11,9 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.ZoneId;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 public class SqlAppointmentDaoImpl implements Dao<Appointment> {
 
@@ -25,11 +23,6 @@ public class SqlAppointmentDaoImpl implements Dao<Appointment> {
     private static final String SQL_DELETE_BY_ID_QUERY = new String("DELETE FROM APPOINTMENT WHERE user_id=?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE APPOINTMENT SET " +
             "`date_n_time`=?, `user_id`=?, `service_id`=?, `complex_id`=? WHERE ID=?");
-
-    {
-        ZoneId zoneId = ZoneId.of("Europe/Moscow");
-        TimeZone timeZone = TimeZone.getTimeZone(zoneId);
-    }
 
     @Override
     public boolean create(Appointment appointment) throws ClassNotFoundException, SQLException {
