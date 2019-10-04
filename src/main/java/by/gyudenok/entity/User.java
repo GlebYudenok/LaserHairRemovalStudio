@@ -1,4 +1,4 @@
-package by.gyudenok.domain;
+package by.gyudenok.entity;
 
 public class User {
     private UserInfo mUserInfo;
@@ -8,8 +8,12 @@ public class User {
     private String mEmail;
     private Role mRole;
 
-    public User() {
-
+    public User(String id, String login, String password, String email, Role role) {
+        mId = id;
+        mLogin = login;
+        mPassword = password;
+        mEmail = email;
+        mRole = role;
     }
 
     public UserInfo getUserInfo() {
