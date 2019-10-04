@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS USER_INFO (
                                      name VARCHAR(255) NOT NULL ,
                                      surname VARCHAR(255) NOT NULL ,
                                      avatar_link TEXT NOT NULL ,
-                                     birth_date VARCHAR(255) NOT NULL ,
+                                     birth_date DATE NOT NULL ,
                                      phone_number VARCHAR(255) NOT NULL ,
                                      gender ENUM ('male', 'female', 'other') ,
                                      FOREIGN KEY (user_id) REFERENCES USER(id),
@@ -38,14 +38,15 @@ CREATE TABLE IF NOT EXISTS COMPLEX_SERVICE (
                         );
 
 CREATE TABLE IF NOT EXISTS APPOINTMENT (
-                             date_n_time DATETIME NOT NULL,
+                             id VARCHAR(255) NOT NULL ,
+                             date_n_time TIMESTAMP NOT NULL,
                              user_id VARCHAR(255),
                              service_id VARCHAR(255),
                              complex_id VARCHAR(255),
                              foreign key (complex_id) REFERENCES COMPLEX_SERVICE(id),
                              foreign key (user_id) REFERENCES USER(id),
                              foreign key (service_id) REFERENCES SERVICE(id),
-                             primary key (date_n_time)
+                             primary key (id)
                          );
 
 CREATE TABLE IF NOT EXISTS PICTURES (
