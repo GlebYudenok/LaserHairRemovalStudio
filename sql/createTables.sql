@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS USER (
                     id VARCHAR(255) NOT NULL ,
-                    login VARCHAR(255) NOT NULL ,
+                    login VARCHAR(255) NOT NULL UNIQUE ,
                     password VARCHAR(255) NOT NULL ,
                     email VARCHAR(255) NOT NULL ,
                     role ENUM('Admin', 'Master', 'Client') NOT NULL ,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS SERVICE (
                         );
 
 CREATE TABLE IF NOT EXISTS USER_INFO (
-                                      user_id VARCHAR(255) ,
+                                     user_id VARCHAR(255) ,
                                      name VARCHAR(255) NOT NULL ,
                                      surname VARCHAR(255) NOT NULL ,
                                      avatar_link TEXT NOT NULL ,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS COMPLEX_SERVICE (
 
 CREATE TABLE IF NOT EXISTS APPOINTMENT (
                              id VARCHAR(255) NOT NULL ,
-                             date_n_time TIMESTAMP NOT NULL,
+                             date_n_time TIMESTAMP NOT NULL UNIQUE ,
                              user_id VARCHAR(255),
                              service_id VARCHAR(255),
                              complex_id VARCHAR(255),
