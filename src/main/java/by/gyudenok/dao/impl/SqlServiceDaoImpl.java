@@ -1,7 +1,7 @@
 package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.ConnectionPool;
-import by.gyudenok.dao.Dao;
+import by.gyudenok.dao.ServiceDao;
 import by.gyudenok.entity.Service;
 import by.gyudenok.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
@@ -10,8 +10,11 @@ import org.apache.logging.log4j.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SqlServiceDaoImpl implements Dao<Service> {
+public class SqlServiceDaoImpl implements ServiceDao {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlServiceDaoImpl.class);
     private static final String SQL_INSERT_QUERY = new String("INSERT INTO SERVICE (" +
@@ -19,6 +22,7 @@ public class SqlServiceDaoImpl implements Dao<Service> {
     private static final String SQL_READ_BY_ID_QUERY = new String("SELECT *FROM SERVICE WHERE ID=?");
     private static final String SQL_DELETE_BY_ID_QUERY = new String("DELETE FROM SERVICE WHERE ID=?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE SERVICE SET zone_name=?, price=? WHERE id=?");
+    private static final String SQL_READ_ALL_QUERY = new String("SELECT *FROM SERVICE");
 
     @Override
     public boolean create(Service service) throws ClassNotFoundException, SQLException {
@@ -89,5 +93,28 @@ public class SqlServiceDaoImpl implements Dao<Service> {
         }
         ps.close();
         return code;
+    }
+
+    @Override
+    public List<Service> readAll() throws SQLException {
+        Statement statement = ConnectionPool.getInstance()
+                .getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(SQL_READ_ALL_QUERY);
+        List<Service> services = new ArrayList<>();
+        while (resultSet.next()) {
+            services.add(new Service(
+                    resultSet.getString("id"),
+                    resultSet.getString("zone_name"),
+                    resultSet.getBigDecimal("price")
+            ));
+        }
+        resultSet.close();
+        statement.close();
+        return services;
+    }
+
+    @Override
+    public Service readByName(String name) {
+        return null;
     }
 }
