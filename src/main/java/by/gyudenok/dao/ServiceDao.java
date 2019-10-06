@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ServiceDao extends Dao<Service> {
     List<Service> readAll() throws SQLException;
-    Service readByName(String name);
+    Service readByName(String name) throws SQLException;
 }
