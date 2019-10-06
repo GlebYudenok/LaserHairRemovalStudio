@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -61,5 +62,18 @@ public class SqlPictureDaoImplTest {
         int actual = mSqlPictureDao.delete("testId");
         int expected = 1;
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void readAll() throws SQLException, DaoException, ClassNotFoundException {
+        create();
+        List<Picture> pictureList = mSqlPictureDao.readAll();
+        boolean actual = false;
+        boolean expected = true;
+        if(pictureList.size() > 0) {
+            actual = true;
+        }
+        Assert.assertEquals(expected, actual);
+        delete();
     }
 }
