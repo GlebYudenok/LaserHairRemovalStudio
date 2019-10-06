@@ -7,6 +7,11 @@ public class Picture {
     public Picture() {
     }
 
+    public Picture(String id, String link) {
+        mId = id;
+        mLink = link;
+    }
+
     public String getId() {
         return mId;
     }
