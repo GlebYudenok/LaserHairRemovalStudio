@@ -1,20 +1,19 @@
 package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.ConnectionPool;
-import by.gyudenok.dao.Dao;
+import by.gyudenok.dao.UserInfoDao;
 import by.gyudenok.entity.Gender;
 import by.gyudenok.entity.UserInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-public class SqlUserInfoDaoImpl implements Dao<UserInfo> {
+public class SqlUserInfoDaoImpl implements UserInfoDao {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlUserInfoDaoImpl.class);
     private static final String SQL_INSERT_QUERY = new String("INSERT INTO USER_INFO " +
@@ -23,6 +22,8 @@ public class SqlUserInfoDaoImpl implements Dao<UserInfo> {
     private static final String SQL_DELETE_BY_ID_QUERY = new String("DELETE FROM USER_INFO WHERE USER_ID = ?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE USER_INFO SET name=?," +
             "surname=?, avatar_link=?, birth_date=?, phone_number=?, gender=? WHERE user_id=?");
+    private static final String SQL_READ_ALL_QUERY = new String("SELECT *FROM USER_INFO");
+    private static final String SQL_READ_BY_NAME_QUERY = new String("SELECT *FROM USER_INFO WHERE name=? AND surname=?");
 
     @Override
     public boolean create(UserInfo userInfo) throws SQLException {
@@ -112,5 +113,38 @@ public class SqlUserInfoDaoImpl implements Dao<UserInfo> {
         }
         ps.close();
         return code;
+    }
+
+    @Override
+    public List<UserInfo> readAll() throws SQLException {
+        Statement statement = ConnectionPool.getInstance()
+                .getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(SQL_READ_ALL_QUERY);
+        List<UserInfo> userInfos = new ArrayList<>();
+        Timestamp timestamp;
+        while (resultSet.next()) {
+            Calendar calendar = Calendar.getInstance();
+            timestamp = new Timestamp(resultSet.getTimestamp("birth_date").getTime());
+            calendar.setTime(timestamp);
+            userInfos.add(
+                    new UserInfo(
+                            resultSet.getString("avatar_link"),
+                            resultSet.getString("user_id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("surname"),
+                            calendar,
+                            resultSet.getString("phone_number"),
+                            Gender.valueOf(resultSet.getString("gender").toUpperCase())
+                    )
+            );
+        }
+        resultSet.close();
+        statement.close();
+        return userInfos;
+    }
+
+    @Override
+    public UserInfo readByName(String name, String surname) {
+        return null;
     }
 }
