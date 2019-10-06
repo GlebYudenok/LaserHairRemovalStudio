@@ -144,7 +144,25 @@ public class SqlUserInfoDaoImpl implements UserInfoDao {
     }
 
     @Override
-    public UserInfo readByName(String name, String surname) {
-        return null;
+    public UserInfo readByName(String name, String surname) throws SQLException {
+        PreparedStatement ps = ConnectionPool.getInstance()
+                .getConnection().prepareStatement(SQL_READ_BY_NAME_QUERY);
+        ps.setString(1, name);
+        ps.setString(2, surname);
+        ResultSet resultSet = ps.executeQuery();
+        UserInfo userInfo = new UserInfo();
+        if(resultSet.next()) {
+            Calendar calendar = Calendar.getInstance();
+            Timestamp timestamp = resultSet.getTimestamp("birth_date");
+            calendar.setTime(timestamp);
+            userInfo.setUserId(resultSet.getString("user_id"));
+            userInfo.setName(resultSet.getString("name"));
+            userInfo.setName(resultSet.getString("surname"));
+            userInfo.setAvatarLink(resultSet.getString("avatar_link"));
+            userInfo.setPhoneNumber(resultSet.getString("phone_number"));
+            userInfo.setGender(Gender.valueOf(resultSet.getString("gender")));
+            userInfo.setDateOfBirth(calendar);
+        }
+        return userInfo;
     }
 }
