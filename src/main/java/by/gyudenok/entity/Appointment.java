@@ -68,6 +68,35 @@ public class Appointment {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Appointment that = (Appointment) o;
+
+        if (mId != null ? !mId.equals(that.mId) : that.mId != null) return false;
+        if (sDateOfMeet.getTime().getYear() != ((Appointment) o).getsDateOfMeet().getTime().getYear()) return false;
+        if (sDateOfMeet.getTime().getMonth() != ((Appointment) o).getsDateOfMeet().getTime().getMonth()) return false;
+        if (sDateOfMeet.getTime().getDay() != ((Appointment) o).getsDateOfMeet().getTime().getDay()) return false;
+        if (sDateOfMeet.getTime().getHours() != ((Appointment) o).getsDateOfMeet().getTime().getHours()) return false;
+        if (sDateOfMeet.getTime().getMinutes() != ((Appointment) o).getsDateOfMeet().getTime().getMinutes()) return false;
+        if (mUserId != null ? !mUserId.equals(that.mUserId) : that.mUserId != null) return false;
+        if (mServiceId != null ? !mServiceId.equals(that.mServiceId) : that.mServiceId != null) return false;
+        return mComplexId != null ? mComplexId.equals(that.mComplexId) : that.mComplexId == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mId != null ? mId.hashCode() : 0;
+        result = 31 * result + (sDateOfMeet != null ? sDateOfMeet.hashCode() : 0);
+        result = 31 * result + (mUserId != null ? mUserId.hashCode() : 0);
+        result = 31 * result + (mServiceId != null ? mServiceId.hashCode() : 0);
+        result = 31 * result + (mComplexId != null ? mComplexId.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Appointment{" +
                 "mId='" + mId + '\'' +

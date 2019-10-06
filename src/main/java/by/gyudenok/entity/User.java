@@ -65,6 +65,33 @@ public class User {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (mUserInfo != null ? !mUserInfo.equals(user.mUserInfo) : user.mUserInfo != null) return false;
+        if (mId != null ? !mId.equals(user.mId) : user.mId != null) return false;
+        if (mLogin != null ? !mLogin.equals(user.mLogin) : user.mLogin != null) return false;
+        if (mPassword != null ? !mPassword.equals(user.mPassword) : user.mPassword != null) return false;
+        if (mEmail != null ? !mEmail.equals(user.mEmail) : user.mEmail != null) return false;
+        return mRole == user.mRole;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mUserInfo != null ? mUserInfo.hashCode() : 0;
+        result = 31 * result + (mId != null ? mId.hashCode() : 0);
+        result = 31 * result + (mLogin != null ? mLogin.hashCode() : 0);
+        result = 31 * result + (mPassword != null ? mPassword.hashCode() : 0);
+        result = 31 * result + (mEmail != null ? mEmail.hashCode() : 0);
+        result = 31 * result + (mRole != null ? mRole.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "User{" +
                 "mUserInfo=" + mUserInfo +

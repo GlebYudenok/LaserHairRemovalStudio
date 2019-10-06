@@ -35,6 +35,27 @@ public class Service {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Service service = (Service) o;
+
+        if (mId != null ? !mId.equals(service.mId) : service.mId != null) return false;
+        if (mZoneName != null ? !mZoneName.equals(service.mZoneName) : service.mZoneName != null) return false;
+        return mPrice != null ? mPrice.equals(service.mPrice) : service.mPrice == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mId != null ? mId.hashCode() : 0;
+        result = 31 * result + (mZoneName != null ? mZoneName.hashCode() : 0);
+        result = 31 * result + (mPrice != null ? mPrice.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Service{" +
                 "mId='" + mId + '\'' +

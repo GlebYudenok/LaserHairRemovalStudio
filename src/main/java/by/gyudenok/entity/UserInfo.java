@@ -69,13 +69,45 @@ public class UserInfo {
         mPhoneNumber = phoneNumber;
     }
 
-
     public Gender getGender() {
         return mGender;
     }
 
     public void setGender(Gender gender) {
         mGender = gender;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserInfo userInfo = (UserInfo) o;
+
+        if (mAvatarLink != null ? !mAvatarLink.equals(userInfo.mAvatarLink) : userInfo.mAvatarLink != null)
+            return false;
+        if (mUserId != null ? !mUserId.equals(userInfo.mUserId) : userInfo.mUserId != null) return false;
+        if (mName != null ? !mName.equals(userInfo.mName) : userInfo.mName != null) return false;
+        if (mSurname != null ? !mSurname.equals(userInfo.mSurname) : userInfo.mSurname != null) return false;
+        if (mDateOfBirth.getTime().getYear() != ((UserInfo) o).getDateOfBirth().getTime().getYear()) return false;
+        if (mDateOfBirth.getTime().getMonth() != ((UserInfo) o).getDateOfBirth().getTime().getMonth()) return false;
+        if (mDateOfBirth.getTime().getDay() != ((UserInfo) o).getDateOfBirth().getTime().getDay()) return false;
+        if (mPhoneNumber != null ? !mPhoneNumber.equals(userInfo.mPhoneNumber) : userInfo.mPhoneNumber != null)
+            return false;
+        return mGender == userInfo.mGender;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mAvatarLink != null ? mAvatarLink.hashCode() : 0;
+        result = 31 * result + (mUserId != null ? mUserId.hashCode() : 0);
+        result = 31 * result + (mName != null ? mName.hashCode() : 0);
+        result = 31 * result + (mSurname != null ? mSurname.hashCode() : 0);
+        result = 31 * result + (mDateOfBirth != null ? mDateOfBirth.hashCode() : 0);
+        result = 31 * result + (mPhoneNumber != null ? mPhoneNumber.hashCode() : 0);
+        result = 31 * result + (mGender != null ? mGender.hashCode() : 0);
+        return result;
     }
 
     @Override

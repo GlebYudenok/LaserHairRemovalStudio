@@ -24,6 +24,25 @@ public class Picture {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Picture picture = (Picture) o;
+
+        if (mId != null ? !mId.equals(picture.mId) : picture.mId != null) return false;
+        return mLink != null ? mLink.equals(picture.mLink) : picture.mLink == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mId != null ? mId.hashCode() : 0;
+        result = 31 * result + (mLink != null ? mLink.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Picture{" +
                 "mId='" + mId + '\'' +
