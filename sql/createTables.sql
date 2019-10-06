@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS USER (
 
 CREATE TABLE IF NOT EXISTS SERVICE (
                         id VARCHAR(255),
-                        zone_name VARCHAR(255),
+                        zone_name VARCHAR(255) UNIQUE,
                         price DECIMAL,
                         PRIMARY KEY (id)
                         );
