@@ -28,11 +28,11 @@ public class SqlComplexServiceDaoImplTest {
     @BeforeClass
     public static void init() throws SQLException, ClassNotFoundException {
         mService = new Service();
-        mService.setId("1");
+        mService.setId("testId");
         mService.setZoneName("testZone");
         mService.setPrice(new BigDecimal(212));
         sSqlServiceDao.create(mService);
-        mService.setId("2");
+        mService.setId("testId2");
         mService.setZoneName("testZone2");
         mService.setPrice(new BigDecimal(123));
         sSqlServiceDao.create(mService);
@@ -40,8 +40,8 @@ public class SqlComplexServiceDaoImplTest {
 
     @AfterClass
     public static void destroy() throws SQLException, DaoException {
-        sSqlServiceDao.delete("1");
-        sSqlServiceDao.delete("2");
+        sSqlServiceDao.delete("testId");
+        sSqlServiceDao.delete("testId2");
     }
 
     @Before
@@ -54,7 +54,7 @@ public class SqlComplexServiceDaoImplTest {
         mComplexService.setGender(Gender.MALE);
         mComplexService.setComplexName("testName");
         List<String> serviceId = new ArrayList<>();
-        serviceId.add("1");
+        serviceId.add("testId");
         mComplexService.setServiceIds(serviceId);
     }
 
@@ -83,9 +83,9 @@ public class SqlComplexServiceDaoImplTest {
         updateComplexService.setPrice(new BigDecimal(500));
         updateComplexService.setGender(Gender.OTHER);
         List<String> service = new ArrayList<>();
-        service.add("2");
+        service.add("testId2");
         updateComplexService.setServiceIds(service);
-        int actual = mSqlComplexServiceDao.update(updateComplexService, "1");
+        int actual = mSqlComplexServiceDao.update(updateComplexService, "testId");
         int expected = 1;
         Assert.assertEquals(expected, actual);
     }
