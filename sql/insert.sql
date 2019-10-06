@@ -68,3 +68,5 @@ INSERT INTO appointment (id, date_n_time, user_id, complex_id) VALUES
 INSERT INTO appointment (id, date_n_time, user_id, service_id) VALUES
 ('3', '2019-07-09 12:00', '1', '2');
 
+INSERT INTO pictures (id, link) VALUES ('1',
+'/img/userAvatar/i.jpg');
