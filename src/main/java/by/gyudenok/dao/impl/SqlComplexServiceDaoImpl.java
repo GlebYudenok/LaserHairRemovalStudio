@@ -25,6 +25,7 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE complex_service SET service_id=?, " +
             "price=?, name=?, user_gender=? WHERE id=? and service_id=?");
     private static final String SQL_READ_ALL_QUERY = new String("SELECT *FROM COMPLEX_SERVICE");
+    private static final String SQL_READ_BY_NAME = new String("SELECT *FROM COMPLEX_SERVICE WHERE name=?");
 
     @Override
     public boolean create(ComplexService complexService) throws ClassNotFoundException, SQLException {
@@ -135,11 +136,36 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
             cs.setServiceIds(servicesIds);
             services.add(cs);
         }
+        resultSet.close();
+        statement.close();
         return services;
     }
 
     @Override
-    public ComplexService readByName(String name) {
-        return null;
+    public ComplexService readByName(String name) throws SQLException {
+        PreparedStatement ps = ConnectionPool.getInstance().
+                getConnection().prepareStatement("" +
+                "SELECT *FROM complex_service WHERE name=?");
+
+        ps.setString(1, name);
+        ResultSet resultSet = ps.executeQuery();
+
+        ComplexService service = new ComplexService();
+        List<String> serviceList = new ArrayList<>();
+
+        while (resultSet.next()) {
+            serviceList.add(resultSet.getString("service_id"));
+            if(resultSet.isFirst()) {
+                service.setGender(Gender.valueOf(resultSet.getString("user_gender").toUpperCase()));
+                service.setPrice(resultSet.getBigDecimal("price"));
+                service.setComplexName(resultSet.getString("name"));
+                service.setId(resultSet.getString("id"));
+            }
+        }
+
+        service.setServiceIds(serviceList);
+        resultSet.close();
+        ps.close();
+        return service;
     }
 }
