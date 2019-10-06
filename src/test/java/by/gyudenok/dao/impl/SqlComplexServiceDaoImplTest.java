@@ -72,6 +72,7 @@ public class SqlComplexServiceDaoImplTest {
                 mSqlComplexServiceDao.read("testId");
         ComplexService expectedComplexService = actualComplexService;
         Assert.assertEquals(expectedComplexService, actualComplexService);
+        delete();
     }
 
     @Test
@@ -88,6 +89,7 @@ public class SqlComplexServiceDaoImplTest {
         int actual = mSqlComplexServiceDao.update(updateComplexService, "testId");
         int expected = 1;
         Assert.assertEquals(expected, actual);
+        delete();
     }
 
     @Test
@@ -95,5 +97,27 @@ public class SqlComplexServiceDaoImplTest {
         int actual = mSqlComplexServiceDao.delete("testId");
         int expected = 1;
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void readAll() throws SQLException, DaoException, ClassNotFoundException {
+        create();
+        List<ComplexService> actualServices = mSqlComplexServiceDao.readAll();
+        boolean actual = false;
+        boolean expected = true;
+        if(actualServices.size() > 0) {
+            actual = true;
+        }
+        Assert.assertEquals(expected, actual);
+        delete();
+    }
+
+    @Test
+    public void readByName() throws SQLException, DaoException, ClassNotFoundException {
+        create();
+        ComplexService csActual = mSqlComplexServiceDao.readByName("testName");
+        ComplexService csExpected = mComplexService;
+        Assert.assertEquals(csExpected, csActual);
+        delete();
     }
 }
