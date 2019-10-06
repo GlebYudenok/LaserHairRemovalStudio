@@ -23,7 +23,7 @@ public class SqlServiceDaoImpl implements ServiceDao {
     private static final String SQL_DELETE_BY_ID_QUERY = new String("DELETE FROM SERVICE WHERE ID=?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE SERVICE SET zone_name=?, price=? WHERE id=?");
     private static final String SQL_READ_ALL_QUERY = new String("SELECT *FROM SERVICE");
-    private static final String SQL_READ_BY_NAME_QUERY = new String("SELECT *FROM SERVICE WHERE name=?");
+    private static final String SQL_READ_BY_NAME_QUERY = new String("SELECT *FROM SERVICE WHERE zone_name=?");
 
     @Override
     public boolean create(Service service) throws ClassNotFoundException, SQLException {
