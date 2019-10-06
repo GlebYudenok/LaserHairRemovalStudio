@@ -1,5 +1,6 @@
 package by.gyudenok.dao.impl;
 
+import by.gyudenok.dao.AppointmentDao;
 import by.gyudenok.dao.ConnectionPool;
 import by.gyudenok.dao.Dao;
 import by.gyudenok.entity.Appointment;
@@ -7,13 +8,12 @@ import by.gyudenok.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
-public class SqlAppointmentDaoImpl implements Dao<Appointment> {
+public class SqlAppointmentDaoImpl implements AppointmentDao {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlAppointmentDaoImpl.class);
     private static final String SQL_INSERT_QUERY = new String("INSERT INTO APPOINTMENT (id, date_n_time," +
@@ -23,6 +23,7 @@ public class SqlAppointmentDaoImpl implements Dao<Appointment> {
     private static final String SQL_DELETE_BY_ID_QUERY = new String("DELETE FROM APPOINTMENT WHERE user_id=?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE APPOINTMENT SET " +
             "`date_n_time`=?, `user_id`=?, `service_id`=?, `complex_id`=? WHERE ID=?");
+    private static final String SQL_READ_ALL_QUERY = new String("SELECT *FROM APPOINTMENT");
 
     @Override
     public boolean create(Appointment appointment) throws ClassNotFoundException, SQLException {
@@ -109,5 +110,27 @@ public class SqlAppointmentDaoImpl implements Dao<Appointment> {
         }
         statement.close();
         return code;
+    }
+
+    @Override
+    public List<Appointment> readAll() throws SQLException {
+        Statement statement = ConnectionPool.getInstance()
+                .getConnection().createStatement();
+        ResultSet rs = statement.executeQuery(SQL_READ_ALL_QUERY);
+        List<Appointment> appointments = new ArrayList<>();
+        while (rs.next()) {
+            java.sql.Timestamp timestamp = rs.getTimestamp("date_n_time");
+            java.util.Date date = new java.util.Date(timestamp.getTime());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            appointments.add(new Appointment(
+                    rs.getString("id"),
+                    calendar,
+                    rs.getString("user_id"),
+                    rs.getString("service_id"),
+                    rs.getString("complex_id")
+            ));
+        }
+        return appointments;
     }
 }
