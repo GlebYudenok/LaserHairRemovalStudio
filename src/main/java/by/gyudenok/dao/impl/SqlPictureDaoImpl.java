@@ -1,7 +1,7 @@
 package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.ConnectionPool;
-import by.gyudenok.dao.Dao;
+import by.gyudenok.dao.PictureDao;
 import by.gyudenok.entity.Picture;
 import by.gyudenok.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
@@ -10,14 +10,18 @@ import org.apache.logging.log4j.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SqlPictureDaoImpl implements Dao<Picture> {
+public class SqlPictureDaoImpl implements PictureDao {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlPictureDaoImpl.class);
     private static final String SQL_INSERT_QUERY = new String("INSERT INTO pictures (id, link) VALUES (?, ?)");
     private static final String SQL_READ_BY_ID_QUERY = new String("SELECT *FROM PICTURES WHERE id=?");
     private static final String SQL_DELETE_BY_ID_QUERY = new String("DELETE FROM PICTURES WHERE id=?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE PICTURES SET link=? WHERE id=?");
+    private static final String SQL_READ_ALL_QUERY = new String("SELECT *FROM PICTURES");
 
     @Override
     public boolean create(Picture picture) throws ClassNotFoundException, SQLException {
@@ -85,5 +89,22 @@ public class SqlPictureDaoImpl implements Dao<Picture> {
         }
         ps.close();
         return code;
+    }
+
+    @Override
+    public List<Picture> readAll() throws SQLException {
+        Statement statement = ConnectionPool.getInstance()
+                .getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(SQL_READ_ALL_QUERY);
+        List<Picture> pictures = new ArrayList<>();
+        while (resultSet.next()) {
+            pictures.add(new Picture(
+                resultSet.getString("id"),
+                resultSet.getString("link")
+            ));
+        }
+        resultSet.close();
+        statement.close();
+        return pictures;
     }
 }
