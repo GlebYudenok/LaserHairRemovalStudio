@@ -157,10 +157,10 @@ public class SqlUserInfoDaoImpl implements UserInfoDao {
             calendar.setTime(timestamp);
             userInfo.setUserId(resultSet.getString("user_id"));
             userInfo.setName(resultSet.getString("name"));
-            userInfo.setName(resultSet.getString("surname"));
+            userInfo.setSurname(resultSet.getString("surname"));
             userInfo.setAvatarLink(resultSet.getString("avatar_link"));
             userInfo.setPhoneNumber(resultSet.getString("phone_number"));
-            userInfo.setGender(Gender.valueOf(resultSet.getString("gender")));
+            userInfo.setGender(Gender.valueOf(resultSet.getString("gender").toUpperCase()));
             userInfo.setDateOfBirth(calendar);
         }
         return userInfo;
