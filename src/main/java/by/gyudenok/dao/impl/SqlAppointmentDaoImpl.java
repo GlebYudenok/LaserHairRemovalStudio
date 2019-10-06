@@ -2,7 +2,6 @@ package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.AppointmentDao;
 import by.gyudenok.dao.ConnectionPool;
-import by.gyudenok.dao.Dao;
 import by.gyudenok.entity.Appointment;
 import by.gyudenok.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
