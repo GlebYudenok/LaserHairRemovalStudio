@@ -10,6 +10,6 @@ public interface ComplexServiceDao<T> {
     T read(String id) throws SQLException;
     int update(T entity, String serviceIds) throws SQLException;
     int delete(String id) throws SQLException, DaoException;
-    List<T> readAll();
-    T readByName(String name);
+    List<T> readAll() throws SQLException;
+    T readByName(String name) throws SQLException;
 }
