@@ -11,6 +11,9 @@ public class UserInfo {
     private String mPhoneNumber;
     private Gender mGender;
 
+    public UserInfo() {
+    }
+
     public UserInfo(String avatarLink, String userId, String name, String surname, Calendar dateOfBirth, String phoneNumber, Gender gender) {
         mAvatarLink = avatarLink;
         mUserId = userId;
