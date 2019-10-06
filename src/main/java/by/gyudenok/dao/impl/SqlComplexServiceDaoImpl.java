@@ -144,7 +144,7 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
     @Override
     public ComplexService readByName(String name) throws SQLException {
         PreparedStatement ps = ConnectionPool.getInstance().
-                getConnection().prepareStatement(SQL_READ_ALL_QUERY);
+                getConnection().prepareStatement(SQL_READ_BY_NAME);
 
         ps.setString(1, name);
         ResultSet resultSet = ps.executeQuery();
