@@ -10,6 +10,7 @@ import org.junit.*;
 
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.List;
 
 public class SqlUserInfoDaoImplTest {
 
@@ -82,5 +83,28 @@ public class SqlUserInfoDaoImplTest {
         int actual = mSqlUserInfoDao.delete("testId");
         int expected = 1;
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void readAll() throws SQLException {
+        create();
+        List<UserInfo> expectedUsersInfo = mSqlUserInfoDao.readAll();
+        boolean expected = true;
+        boolean actual = false;
+        if(expectedUsersInfo.size() > 0) {
+            actual = true;
+        }
+        Assert.assertEquals(expected, actual);
+        delete();
+    }
+
+    @Test
+    public void readByName() throws SQLException {
+        create();
+        UserInfo actualUserInfo = mSqlUserInfoDao.readByName(
+                "testName", "testSurname");
+        UserInfo expectedUserInfo = mUserInfo;
+        Assert.assertEquals(expectedUserInfo, actualUserInfo);
+        delete();
     }
 }
