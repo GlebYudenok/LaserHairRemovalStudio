@@ -10,6 +10,12 @@ public class Service {
     public Service() {
     }
 
+    public Service(String id, String zoneName, BigDecimal price) {
+        mId = id;
+        mZoneName = zoneName;
+        mPrice = price;
+    }
+
     public String getId() {
         return mId;
     }
