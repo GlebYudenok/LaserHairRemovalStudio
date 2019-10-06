@@ -35,14 +35,15 @@ public class SqlUserDaoImpl implements UserDao {
         ps.setString(4, user.getEmail());
         ps.setString(5, user.getRole().name());
 
-        boolean ex = ps.execute();
-        if(ex == false) {
-            LOGGER.warn("Cannot create user");
-        }else {
-            LOGGER.info("User was created successfully!");
-        }
+        int code = ps.executeUpdate();
         ps.close();
-        return ex;
+        if(code > 0) {
+            LOGGER.info("User was created successfully!");
+            return true;
+        }else {
+            LOGGER.warn("Cannot insert data");
+            return false;
+        }
     }
 
     @Override
@@ -96,7 +97,7 @@ public class SqlUserDaoImpl implements UserDao {
         PreparedStatement ps = ConnectionPool.getInstance()
                         .getConnection().prepareStatement(SQL_DELETE_BY_ID_QUERY);
         ps.setString(1, id);
-        ps.execute();
+
         int code = ps.executeUpdate();
         if(code > 0) {
             LOGGER.info("User was delete successfully!");
@@ -149,7 +150,7 @@ public class SqlUserDaoImpl implements UserDao {
                     resultSet.getString("login"),
                     resultSet.getString("password"),
                     resultSet.getString("email"),
-                    Role.valueOf(resultSet.getString("role"))
+                    Role.valueOf(resultSet.getString("role").toUpperCase())
             );
         }
         resultSet.close();

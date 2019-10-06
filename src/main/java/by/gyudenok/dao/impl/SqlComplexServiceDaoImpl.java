@@ -34,14 +34,15 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
         ps.setString(4, complexService.getComplexName());
         ps.setString(5, complexService.getGender().name());
 
-        boolean ex = ps.execute();
-        if(ex == false) {
-            LOGGER.warn("Cannot create ComplexService");
-        }else {
-            LOGGER.info("ComplexService was created successfully!");
-        }
+        int code = ps.executeUpdate();
         ps.close();
-        return ex;
+        if(code > 0) {
+            LOGGER.info("Complex service was created successfully!");
+            return true;
+        }else {
+            LOGGER.warn("Cannot insert data");
+            return false;
+        }
     }
 
     @Override

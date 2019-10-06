@@ -28,14 +28,15 @@ public class SqlServiceDaoImpl implements Dao<Service> {
         ps.setString(2, service.getZoneName());
         ps.setBigDecimal(3, service.getPrice());
 
-        boolean ex = ps.execute();
-        if(ex == false) {
-            LOGGER.warn("Cannot create Service");
-        }else {
-            LOGGER.info("Service was created successfully!");
-        }
+        int code = ps.executeUpdate();
         ps.close();
-        return ex;
+        if(code > 0) {
+            LOGGER.info("Service was created successfully!");
+            return true;
+        }else {
+            LOGGER.warn("Cannot insert data");
+            return false;
+        }
     }
 
     @Override

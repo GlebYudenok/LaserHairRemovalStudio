@@ -34,14 +34,15 @@ public class SqlAppointmentDaoImpl implements Dao<Appointment> {
         ps.setString(3, appointment.getUserId());
         ps.setString(4, appointment.getServiceId());
         ps.setString(5, appointment.getComplexId());
-        boolean ex = ps.execute();
-        if(ex == false) {
-            LOGGER.warn("Cannot insert data");
-        }else {
-            LOGGER.info("Appointment was created successfully!");
-        }
+        int code = ps.executeUpdate();
         ps.close();
-        return ex;
+        if(code > 0) {
+            LOGGER.info("Appointment was created successfully!");
+            return true;
+        }else {
+            LOGGER.warn("Cannot insert data");
+            return false;
+        }
     }
 
     @Override

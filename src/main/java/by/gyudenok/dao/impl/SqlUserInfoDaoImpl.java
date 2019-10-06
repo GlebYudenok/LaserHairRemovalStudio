@@ -37,14 +37,15 @@ public class SqlUserInfoDaoImpl implements Dao<UserInfo> {
         ps.setString(6, userInfo.getPhoneNumber());
         ps.setString(7, userInfo.getGender().name());
 
-        boolean ex = ps.execute();
-        if(ex == false) {
-            LOGGER.warn("Cannot insert user info");
-        }else {
-            LOGGER.info("User info was inserted successfully!");
-        }
+        int code = ps.executeUpdate();
         ps.close();
-        return ex;
+        if(code > 0) {
+            LOGGER.info("User info was inserted successfully!");
+            return true;
+        }else {
+            LOGGER.warn("Cannot insert data");
+            return false;
+        }
     }
 
     @Override
@@ -62,10 +63,10 @@ public class SqlUserInfoDaoImpl implements Dao<UserInfo> {
             java.util.Date date = new Date(timestamp.getTime());
             calendar.setTime(date);
             userInfo = new UserInfo(
+                    resultSet.getString("avatar_link"),
                     resultSet.getString("user_id"),
                     resultSet.getString("name"),
                     resultSet.getString("surname"),
-                    resultSet.getString("avatar_link"),
                     calendar,
                     resultSet.getString("phone_number"),
                     Gender.valueOf(resultSet.getString("gender").toUpperCase())

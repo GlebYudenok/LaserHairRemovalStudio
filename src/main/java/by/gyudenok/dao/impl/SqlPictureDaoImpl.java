@@ -14,10 +14,9 @@ import java.sql.SQLException;
 public class SqlPictureDaoImpl implements Dao<Picture> {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlPictureDaoImpl.class);
-    private static final String SQL_INSERT_QUERY = new String("INSERT INTO PICTURES" +
-            "(id,link) VALUES (?,?)");
+    private static final String SQL_INSERT_QUERY = new String("INSERT INTO pictures (id, link) VALUES (?, ?)");
     private static final String SQL_READ_BY_ID_QUERY = new String("SELECT *FROM PICTURES WHERE id=?");
-    private static final String SQL_DELETE_BY_ID_QUERY = new String("DEKETE FROM PICTURES WHERE id=?");
+    private static final String SQL_DELETE_BY_ID_QUERY = new String("DELETE FROM PICTURES WHERE id=?");
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE PICTURES SET link=? WHERE id=?");
 
     @Override
@@ -26,14 +25,15 @@ public class SqlPictureDaoImpl implements Dao<Picture> {
                 .getConnection().prepareStatement(SQL_INSERT_QUERY);
         ps.setString(1, picture.getId());
         ps.setString(2, picture.getLink());
-        boolean ex = ps.execute();
-        if(ex == false) {
-            LOGGER.warn("Cannot insert picture");
-        }else {
-            LOGGER.info("Picture was inserted successfully!");
-        }
+        int code = ps.executeUpdate();
         ps.close();
-        return ex;
+        if(code > 0) {
+            LOGGER.info("Picture was created successfully!");
+            return true;
+        }else {
+            LOGGER.warn("Cannot insert data");
+            return false;
+        }
     }
 
     @Override
