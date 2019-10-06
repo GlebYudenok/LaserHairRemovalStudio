@@ -125,4 +125,17 @@ public class SqlAppointmentDaoImplTest {
         int expected = 1;
         Assert.assertEquals(expected, actual);
     }
+
+    @Test
+    public void readAll() throws SQLException, ClassNotFoundException, DaoException {
+        create();
+        List<Appointment> actualAppointments = mSqlAppointmentDao.readAll();
+        boolean actual = false;
+        boolean expected = true;
+        if(actualAppointments.size() > 0) {
+            actual = true;
+        }
+        Assert.assertEquals(expected, actual);
+        delete();
+    }
 }
