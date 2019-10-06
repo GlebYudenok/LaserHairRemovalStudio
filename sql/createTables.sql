@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS COMPLEX_SERVICE (
                         id VARCHAR(255),
                         service_id VARCHAR(255),
                         price DECIMAL,
-                        name VARCHAR(255),
+                        name VARCHAR(255) UNIQUE ,
                         user_gender enum ('male', 'female', 'other'),
                         FOREIGN KEY (service_id) REFERENCES SERVICE(id) ON DELETE CASCADE ,
                         PRIMARY KEY (id,service_id)
