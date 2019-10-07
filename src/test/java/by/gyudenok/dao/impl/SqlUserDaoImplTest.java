@@ -87,4 +87,50 @@ public class SqlUserDaoImplTest {
         int expected = 1;
         Assert.assertEquals(expected, actual);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void createWithNullArguments() throws DaoException {
+        mSqlUserDao.create(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void readWithNullArguments() throws DaoException {
+        mSqlUserDao.read(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void updateWithNullArguments() throws DaoException {
+        mSqlUserDao.update(null);
+    }
+
+    @Test(expected = DaoException.class)
+    public void deleteWithNullArguments() throws DaoException {
+        mSqlUserDao.delete(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void readByLoginWithNullArguments() throws DaoException {
+        mSqlUserDao.readByLogin(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void readNotExsistingUser() throws DaoException {
+        mSqlUserDao.read("wrongId");
+    }
+
+    @Test(expected = DaoException.class)
+    public void updateNotExsistingUser() throws DaoException {
+        mSqlUserDao.update(new User("wrongId", "testLogin",
+                "testPassword", "testEmail", Role.ADMIN));
+    }
+
+    @Test(expected = DaoException.class)
+    public void deleteNotExsistingUser() throws DaoException {
+        mSqlUserDao.delete("wrongID");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void readByLoginNotExsistingUser() throws DaoException {
+        mSqlUserDao.readByLogin("wrongLogin");
+    }
 }

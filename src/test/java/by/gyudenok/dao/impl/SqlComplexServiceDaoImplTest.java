@@ -119,4 +119,47 @@ public class SqlComplexServiceDaoImplTest {
         Assert.assertEquals(csExpected, csActual);
         delete();
     }
+
+    @Test(expected = NullPointerException.class)
+    public void createWithWrongArgs() throws DaoException {
+        ComplexService wrongComplexService = new ComplexService();
+        wrongComplexService.setId("wrongId");
+        mSqlComplexServiceDao.create(wrongComplexService);
+    }
+
+    @Test(expected = DaoException.class)
+    public void readWithWrongArgs() throws DaoException {
+        mSqlComplexServiceDao.read("wrongId");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void updateWithWrongArgs() throws DaoException {
+        ComplexService wrongComplexService = new ComplexService();
+        wrongComplexService.setId("wrongId");
+        mSqlComplexServiceDao.update(wrongComplexService, "100");
+    }
+
+    @Test(expected = DaoException.class)
+    public void updateWithNotLogicalArgs() throws DaoException {
+        ComplexService wrongComplexService = new ComplexService();
+        wrongComplexService.setId("testId");
+        wrongComplexService.setComplexName("NewYork");
+        wrongComplexService.setPrice(new BigDecimal(1000));
+        wrongComplexService.setGender(Gender.MALE);
+        List<String> serviceId = new ArrayList<>();
+        serviceId.add("33");
+        wrongComplexService.setServiceIds(serviceId);
+        mSqlComplexServiceDao.update(wrongComplexService, "3");
+    }
+
+    @Test(expected = DaoException.class)
+    public void deleteWithWrongArgs() throws DaoException {
+        mSqlComplexServiceDao.delete("wrongId");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void readByNameWithWrongArgs() throws DaoException {
+        ComplexService cs = mSqlComplexServiceDao.readByName("wrongName");
+        System.out.println(cs);
+    }
 }

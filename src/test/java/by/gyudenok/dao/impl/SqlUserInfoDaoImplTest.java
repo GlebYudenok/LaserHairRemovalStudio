@@ -1,5 +1,6 @@
 package by.gyudenok.dao.impl;
 
+import by.gyudenok.dao.Dao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.Gender;
 import by.gyudenok.entity.Role;
@@ -104,5 +105,61 @@ public class SqlUserInfoDaoImplTest {
         UserInfo expectedUserInfo = mUserInfo;
         Assert.assertEquals(expectedUserInfo, actualUserInfo);
         delete();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void createWithNullArguments() throws DaoException {
+        mSqlUserInfoDao.create(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void readWithNullArguments() throws DaoException {
+        mSqlUserInfoDao.read(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void updateWithNullArguments() throws DaoException {
+        mSqlUserInfoDao.update(null);
+    }
+
+    @Test(expected = DaoException.class)
+    public void deleteWithNullArguments() throws DaoException {
+        mSqlUserInfoDao.delete(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void readByNameWithNullArguments() throws DaoException {
+        mSqlUserInfoDao.readByName(null, null);
+    }
+
+    /**
+     *
+     * @throws DaoException
+     */
+    @Test(expected = NullPointerException.class)
+    public void createWithWrongArguments() throws DaoException {
+        mSqlUserInfoDao.create(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void readWithWrongArguments() throws DaoException {
+        mSqlUserInfoDao.read("wrongId");
+    }
+
+    @Test(expected = DaoException.class)
+    public void updateWithWrongArguments() throws DaoException {
+        mSqlUserInfoDao.update(new UserInfo("link", "wrongId",
+                "name", "surname", Calendar.getInstance(),
+                "num", Gender.FEMALE));
+    }
+
+    @Test(expected = DaoException.class)
+    public void deleteWithWrongArguments() throws DaoException {
+        mSqlUserInfoDao.delete("wrongId");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void readByNameWithWrongArguments() throws DaoException {
+        mSqlUserInfoDao.readByName("wrongName", "wrongName");
     }
 }

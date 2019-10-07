@@ -1,5 +1,6 @@
 package by.gyudenok.dao.impl;
 
+import by.gyudenok.dao.Dao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.Picture;
 import by.gyudenok.exception.DaoException;
@@ -70,5 +71,52 @@ public class SqlPictureDaoImplTest {
         }
         Assert.assertEquals(expected, actual);
         delete();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void createWithNullArgs() throws DaoException {
+        mSqlPictureDao.create(null);
+    }
+
+    @Test(expected = DaoException.class)
+    public void readWithNullArgs() throws DaoException {
+        mSqlPictureDao.read(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void updateWithNullArgs() throws DaoException {
+        mSqlPictureDao.update(null);
+    }
+
+    @Test(expected = DaoException.class)
+    public void deleteWithNullArgs() throws DaoException {
+        mSqlPictureDao.delete(null);
+    }
+
+    @Test(expected = DaoException.class)
+    public void createWithExsistingIdField() throws DaoException {
+        create();
+        try {
+            mSqlPictureDao.create(new Picture("testId", "testLink"));
+        }catch (DaoException e){
+            throw new DaoException();
+        }finally {
+            mSqlPictureDao.delete("testId");
+        }
+    }
+
+    @Test(expected = DaoException.class)
+    public void readWithWrongArgs() throws DaoException {
+        mSqlPictureDao.read("wrongId");
+    }
+
+    @Test(expected = DaoException.class)
+    public void updateWithWrongArgs() throws DaoException {
+        mSqlPictureDao.update(new Picture("wrongId", "link"));
+    }
+
+    @Test(expected = DaoException.class)
+    public void deleteWithWrongArgs() throws DaoException {
+        mSqlPictureDao.delete("wrongId");
     }
 }

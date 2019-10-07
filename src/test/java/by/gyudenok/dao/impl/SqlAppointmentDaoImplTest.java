@@ -1,5 +1,6 @@
 package by.gyudenok.dao.impl;
 
+import by.gyudenok.dao.Dao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.*;
 import by.gyudenok.exception.DaoException;
@@ -135,5 +136,39 @@ public class SqlAppointmentDaoImplTest {
         }
         Assert.assertEquals(expected, actual);
         delete();
+    }
+
+    @Test(expected = DaoException.class)
+    public void createWithWrongArgs() throws DaoException {
+        Appointment wrongAppointment = new Appointment();
+        wrongAppointment.setServiceId("wrongService");
+        wrongAppointment.setComplexId("wrongComplex");
+        wrongAppointment.setUserId("wrongUser");
+        Calendar calendar = Calendar.getInstance();
+        wrongAppointment.setsDateOfMeet(calendar);
+        wrongAppointment.setId("testId");
+        mSqlAppointmentDao.create(wrongAppointment);
+    }
+
+    @Test(expected = DaoException.class)
+    public void readWithWrongArgs() throws DaoException {
+        mSqlAppointmentDao.read("wrongId");
+    }
+
+    @Test(expected = DaoException.class)
+    public void updateWithWrongArgs() throws DaoException {
+        Appointment wrongAppointment = new Appointment();
+        wrongAppointment.setServiceId("wrongService");
+        wrongAppointment.setComplexId("wrongComplex");
+        wrongAppointment.setUserId("wrongUser");
+        Calendar calendar = Calendar.getInstance();
+        wrongAppointment.setsDateOfMeet(calendar);
+        wrongAppointment.setId("WrongTestId");
+        mSqlAppointmentDao.update(wrongAppointment);
+    }
+
+    @Test(expected = DaoException.class)
+    public void deleteWithWrongArgs() throws DaoException {
+        mSqlAppointmentDao.delete("wrongId");
     }
 }
