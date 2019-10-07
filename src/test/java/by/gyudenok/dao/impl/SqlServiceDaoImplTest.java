@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.List;
 
 public class SqlServiceDaoImplTest {
@@ -18,7 +17,7 @@ public class SqlServiceDaoImplTest {
     Service mService = null;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mSqlDaoFactory = SqlDaoFactory.getInstance();
         mSqlServiceDao = mSqlDaoFactory.getSqlServiceDao();
         mService = new Service();
@@ -28,14 +27,14 @@ public class SqlServiceDaoImplTest {
     }
 
     @Test
-    public void create() throws SQLException, ClassNotFoundException, DaoException {
+    public void create() throws DaoException {
         boolean actual = mSqlServiceDao.create(mService);
         boolean expected = true;
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void read() throws SQLException, DaoException, ClassNotFoundException {
+    public void read() throws DaoException {
         create();
         Service actualService = mSqlServiceDao.read("testId");
         Service expectedService = mService;
@@ -44,7 +43,7 @@ public class SqlServiceDaoImplTest {
     }
 
     @Test
-    public void update() throws DaoException, SQLException, ClassNotFoundException {
+    public void update() throws DaoException {
         create();
         Service updateService = new Service();
         updateService.setPrice(new BigDecimal(228));
@@ -57,14 +56,14 @@ public class SqlServiceDaoImplTest {
     }
 
     @Test
-    public void delete() throws SQLException, DaoException, ClassNotFoundException {
+    public void delete() throws DaoException {
         int actual = mSqlServiceDao.delete("testId");
         int expected = 1;
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void readAll() throws DaoException, SQLException, ClassNotFoundException {
+    public void readAll() throws DaoException {
         create();
         List<Service> services = mSqlServiceDao.readAll();
         boolean actual = false;
@@ -77,7 +76,7 @@ public class SqlServiceDaoImplTest {
     }
 
     @Test
-    public void readByName() throws DaoException, SQLException, ClassNotFoundException {
+    public void readByName() throws DaoException {
         create();
         Service actualService = mSqlServiceDao.readByName("testZone");
         Service expectedService = mService;

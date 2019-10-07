@@ -28,17 +28,22 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
     private static final String SQL_READ_BY_NAME = new String("SELECT *FROM COMPLEX_SERVICE WHERE name=?");
 
     @Override
-    public boolean create(ComplexService complexService) throws ClassNotFoundException, SQLException {
-        PreparedStatement ps = ConnectionPool.getInstance()
-                .getConnection().prepareStatement(SQL_INSERT_QUERY);
-        ps.setString(1, complexService.getId());
-        ps.setString(2, complexService.getServiceIds().get(0));
-        ps.setBigDecimal(3, complexService.getPrice());
-        ps.setString(4, complexService.getComplexName());
-        ps.setString(5, complexService.getGender().name());
+    public boolean create(ComplexService complexService) throws DaoException {
+        int code = 0;
+        try {
+            PreparedStatement ps = ConnectionPool.getInstance()
+                    .getConnection().prepareStatement(SQL_INSERT_QUERY);
+            ps.setString(1, complexService.getId());
+            ps.setString(2, complexService.getServiceIds().get(0));
+            ps.setBigDecimal(3, complexService.getPrice());
+            ps.setString(4, complexService.getComplexName());
+            ps.setString(5, complexService.getGender().name());
 
-        int code = ps.executeUpdate();
-        ps.close();
+            code = ps.executeUpdate();
+            ps.close();
+        }catch (SQLException e) {
+            throw new DaoException();
+        }
         if(code > 0) {
             LOGGER.info("Complex service was created successfully!");
             return true;
@@ -49,14 +54,15 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
     }
 
     @Override
-    public ComplexService read(String id) throws SQLException {
-        PreparedStatement ps = ConnectionPool.getInstance().
-                getConnection().prepareStatement(SQL_READ_BY_ID_QUERY);
-
-        ps.setString(1, id);
-        ResultSet resultSet = ps.executeQuery();
+    public ComplexService read(String id) throws DaoException {
         ComplexService service = null;
-        List<String> serviceList = new ArrayList<>();
+        try {
+            PreparedStatement ps = ConnectionPool.getInstance().
+                    getConnection().prepareStatement(SQL_READ_BY_ID_QUERY);
+
+            ps.setString(1, id);
+            ResultSet resultSet = ps.executeQuery();
+            List<String> serviceList = new ArrayList<>();
 
             if (resultSet.first()) {
                 service = new ComplexService(
@@ -64,7 +70,7 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
                         resultSet.getString("name"),
                         Gender.valueOf(resultSet.getString("user_gender").toUpperCase()),
                         resultSet.getBigDecimal("price")
-                        );
+                );
             }
 
             do {
@@ -73,6 +79,9 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
             service.setServiceIds(serviceList);
             resultSet.close();
             ps.close();
+        } catch (SQLException e) {
+             throw new DaoException();
+        }
        return service;
     }
 
@@ -80,91 +89,110 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
         Wrong update cause we set what from List of ids will update manually.
      */
     @Override
-    public int update(ComplexService entity, String serviceId) throws SQLException {
-        PreparedStatement ps = ConnectionPool.getInstance()
-                .getConnection().prepareStatement(SQL_UPDATE_BY_ID_QUERY);
+    public int update(ComplexService entity, String serviceId) throws DaoException {
+        int code = 0;
+        try {
+            PreparedStatement ps = ConnectionPool.getInstance()
+                    .getConnection().prepareStatement(SQL_UPDATE_BY_ID_QUERY);
 
-        ps.setString(1, entity.getServiceIds().get(0));
-        ps.setBigDecimal(2, entity.getPrice());
-        ps.setString(3, entity.getComplexName());
-        ps.setString(4, entity.getGender().name());
-        ps.setString(5, entity.getId());
-        ps.setString(6, serviceId);
+            ps.setString(1, entity.getServiceIds().get(0));
+            ps.setBigDecimal(2, entity.getPrice());
+            ps.setString(3, entity.getComplexName());
+            ps.setString(4, entity.getGender().name());
+            ps.setString(5, entity.getId());
+            ps.setString(6, serviceId);
 
-        int code = ps.executeUpdate();
-        if(code > 0) {
-            LOGGER.info("Complex service was successful update!");
-        }else {
-            LOGGER.warn("Complex not found or can't update!");
+            code = ps.executeUpdate();
+            if (code > 0) {
+                LOGGER.info("Complex service was successful update!");
+            } else {
+                LOGGER.warn("Complex not found or can't update!");
+            }
+            ps.close();
+        }catch (SQLException e) {
+            throw new DaoException();
         }
-        ps.close();
         return code;
     }
 
     @Override
-    public int delete(String id) throws SQLException, DaoException {
-        PreparedStatement ps = ConnectionPool.getInstance()
-                .getConnection().prepareStatement(SQL_DELETE_BY_ID_QUERY);
-        ps.setString(1, id);
-        int code = ps.executeUpdate();
-        if(code > 0) {
-            LOGGER.info("Complex was delete successfully!");
-        } else {
-            LOGGER.warn("Complex not found or can't delete!");
+    public int delete(String id) throws DaoException {
+        int code = 0;
+        try {
+            PreparedStatement ps = ConnectionPool.getInstance()
+                    .getConnection().prepareStatement(SQL_DELETE_BY_ID_QUERY);
+            ps.setString(1, id);
+            code = ps.executeUpdate();
+            if (code > 0) {
+                LOGGER.info("Complex was delete successfully!");
+            } else {
+                LOGGER.warn("Complex not found or can't delete!");
+            }
+            ps.close();
+        }catch (SQLException e) {
+            throw new DaoException();
         }
-        ps.close();
         return code;
     }
 
     @Override
-    public List<ComplexService> readAll() throws SQLException {
-        Statement statement = ConnectionPool.getInstance().getConnection()
-                .createStatement();
-        ResultSet resultSet = statement.executeQuery(SQL_READ_ALL_QUERY);
+    public List<ComplexService> readAll() throws DaoException {
         List<ComplexService> services = new ArrayList<>();
-        while (resultSet.next()) {
-            ComplexService cs =
-                    new ComplexService(
-                            resultSet.getString("id"),
-                            resultSet.getString("name"),
-                            Gender.valueOf(
-                                    resultSet.getString("user_gender").toUpperCase()),
-                            resultSet.getBigDecimal("price")
-                    );
-            List<String> servicesIds = new ArrayList<>();
-            servicesIds.add(resultSet.getString("service_id"));
-            cs.setServiceIds(servicesIds);
-            services.add(cs);
+        try {
+            Statement statement = ConnectionPool.getInstance().getConnection()
+                    .createStatement();
+            ResultSet resultSet = statement.executeQuery(SQL_READ_ALL_QUERY);
+            while (resultSet.next()) {
+                ComplexService cs =
+                        new ComplexService(
+                                resultSet.getString("id"),
+                                resultSet.getString("name"),
+                                Gender.valueOf(
+                                        resultSet.getString("user_gender").toUpperCase()),
+                                resultSet.getBigDecimal("price")
+                        );
+                List<String> servicesIds = new ArrayList<>();
+                servicesIds.add(resultSet.getString("service_id"));
+                cs.setServiceIds(servicesIds);
+                services.add(cs);
+            }
+            resultSet.close();
+            statement.close();
+        }catch (SQLException e) {
+            throw new DaoException();
         }
-        resultSet.close();
-        statement.close();
         return services;
     }
 
     @Override
-    public ComplexService readByName(String name) throws SQLException {
-        PreparedStatement ps = ConnectionPool.getInstance().
-                getConnection().prepareStatement(SQL_READ_BY_NAME);
-
-        ps.setString(1, name);
-        ResultSet resultSet = ps.executeQuery();
-
+    public ComplexService readByName(String name) throws DaoException {
         ComplexService service = new ComplexService();
-        List<String> serviceList = new ArrayList<>();
+        try {
+            PreparedStatement ps = ConnectionPool.getInstance().
+                    getConnection().prepareStatement(SQL_READ_BY_NAME);
 
-        while (resultSet.next()) {
-            serviceList.add(resultSet.getString("service_id"));
-            if(resultSet.isFirst()) {
-                service.setGender(Gender.valueOf(resultSet.getString("user_gender").toUpperCase()));
-                service.setPrice(resultSet.getBigDecimal("price"));
-                service.setComplexName(resultSet.getString("name"));
-                service.setId(resultSet.getString("id"));
+            ps.setString(1, name);
+            ResultSet resultSet = ps.executeQuery();
+
+            List<String> serviceList = new ArrayList<>();
+
+            while (resultSet.next()) {
+                serviceList.add(resultSet.getString("service_id"));
+                if (resultSet.isFirst()) {
+                    service.setGender(Gender.valueOf(resultSet.
+                            getString("user_gender").toUpperCase()));
+                    service.setPrice(resultSet.getBigDecimal("price"));
+                    service.setComplexName(resultSet.getString("name"));
+                    service.setId(resultSet.getString("id"));
+                }
             }
-        }
 
-        service.setServiceIds(serviceList);
-        resultSet.close();
-        ps.close();
+            service.setServiceIds(serviceList);
+            resultSet.close();
+            ps.close();
+        }catch (SQLException e) {
+            throw new DaoException();
+        }
         return service;
     }
 }

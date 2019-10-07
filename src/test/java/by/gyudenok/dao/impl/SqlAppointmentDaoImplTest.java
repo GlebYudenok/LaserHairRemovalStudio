@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -25,7 +24,7 @@ public class SqlAppointmentDaoImplTest {
     static ComplexService sComplexService = null;
 
     @BeforeClass
-    public static void init() throws SQLException, ClassNotFoundException {
+    public static void init() throws DaoException {
         sUser = new User(
                 "testId", "testLogin",
                 "testPassword", "testEmail",
@@ -61,11 +60,10 @@ public class SqlAppointmentDaoImplTest {
         sComplexService.setComplexName("testName2");
         sComplexService.setId("testId2");
         SqlDaoFactory.getInstance().getSqlComplexServiceDao().create(sComplexService);
-
     }
 
     @AfterClass
-    public static void destroy() throws SQLException, DaoException {
+    public static void destroy() throws DaoException {
         SqlDaoFactory.getInstance().getSqlUserDao().delete("testId");
         SqlDaoFactory.getInstance().getSqlComplexServiceDao().delete("testId");
         SqlDaoFactory.getInstance().getSqlServiceDao().delete("testId");
@@ -87,14 +85,14 @@ public class SqlAppointmentDaoImplTest {
     }
 
     @Test
-    public void create() throws SQLException, ClassNotFoundException {
+    public void create() throws DaoException {
         boolean actual = mSqlAppointmentDao.create(mAppointment);
         boolean expected = true;
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void read() throws SQLException, ClassNotFoundException, DaoException {
+    public void read() throws DaoException {
         create();
         Appointment actualAppointment = mSqlAppointmentDao.read("testId");
         Appointment expectedAppointment = mAppointment;
@@ -103,7 +101,7 @@ public class SqlAppointmentDaoImplTest {
     }
 
     @Test
-    public void update() throws SQLException, ClassNotFoundException, DaoException {
+    public void update() throws DaoException {
         create();
         Calendar calendar = Calendar.getInstance();
         calendar.set(2000, Calendar.SEPTEMBER, 11, 2,28,0);
@@ -120,14 +118,14 @@ public class SqlAppointmentDaoImplTest {
     }
 
     @Test
-    public void delete() throws SQLException, DaoException {
+    public void delete() throws DaoException {
         int actual = mSqlAppointmentDao.delete("testId");
         int expected = 1;
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void readAll() throws SQLException, ClassNotFoundException, DaoException {
+    public void readAll() throws DaoException {
         create();
         List<Appointment> actualAppointments = mSqlAppointmentDao.readAll();
         boolean actual = false;

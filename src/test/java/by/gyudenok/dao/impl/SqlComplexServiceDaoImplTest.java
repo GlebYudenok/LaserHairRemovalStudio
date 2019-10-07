@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class SqlComplexServiceDaoImplTest {
     static SqlServiceDaoImpl sSqlServiceDao = sSqlDaoFactory.getSqlServiceDao();
 
     @BeforeClass
-    public static void init() throws SQLException, ClassNotFoundException {
+    public static void init() throws DaoException {
         mService = new Service();
         mService.setId("testId");
         mService.setZoneName("testZone");
@@ -39,13 +38,13 @@ public class SqlComplexServiceDaoImplTest {
     }
 
     @AfterClass
-    public static void destroy() throws SQLException, DaoException {
+    public static void destroy() throws DaoException {
         sSqlServiceDao.delete("testId");
         sSqlServiceDao.delete("testId2");
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mSqlDaoFactory = SqlDaoFactory.getInstance();
         mSqlComplexServiceDao = mSqlDaoFactory.getSqlComplexServiceDao();
         mComplexService = new ComplexService();
@@ -59,14 +58,14 @@ public class SqlComplexServiceDaoImplTest {
     }
 
     @Test
-    public void create() throws SQLException, ClassNotFoundException, DaoException {
+    public void create() throws DaoException {
         boolean actual = mSqlComplexServiceDao.create(mComplexService);
         boolean expected = true;
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void read() throws SQLException, DaoException, ClassNotFoundException {
+    public void read() throws DaoException {
         create();
         ComplexService actualComplexService =
                 mSqlComplexServiceDao.read("testId");
@@ -76,7 +75,7 @@ public class SqlComplexServiceDaoImplTest {
     }
 
     @Test
-    public void update() throws DaoException, SQLException, ClassNotFoundException {
+    public void update() throws DaoException {
         create();
         ComplexService updateComplexService = new ComplexService();
         updateComplexService.setId("testId");
@@ -93,14 +92,14 @@ public class SqlComplexServiceDaoImplTest {
     }
 
     @Test
-    public void delete() throws SQLException, DaoException {
+    public void delete() throws DaoException {
         int actual = mSqlComplexServiceDao.delete("testId");
         int expected = 1;
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void readAll() throws SQLException, DaoException, ClassNotFoundException {
+    public void readAll() throws DaoException {
         create();
         List<ComplexService> actualServices = mSqlComplexServiceDao.readAll();
         boolean actual = false;
@@ -113,7 +112,7 @@ public class SqlComplexServiceDaoImplTest {
     }
 
     @Test
-    public void readByName() throws SQLException, DaoException, ClassNotFoundException {
+    public void readByName() throws DaoException {
         create();
         ComplexService csActual = mSqlComplexServiceDao.readByName("testName");
         ComplexService csExpected = mComplexService;

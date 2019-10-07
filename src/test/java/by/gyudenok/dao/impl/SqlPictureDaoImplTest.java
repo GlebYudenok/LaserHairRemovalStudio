@@ -3,16 +3,11 @@ package by.gyudenok.dao.impl;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.Picture;
 import by.gyudenok.exception.DaoException;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class SqlPictureDaoImplTest {
 
@@ -21,7 +16,7 @@ public class SqlPictureDaoImplTest {
     Picture mPicture = null;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws DaoException {
         mSqlDaoFactory = SqlDaoFactory.getInstance();
         mSqlPictureDao = mSqlDaoFactory.getSqlPictureDao();
         mPicture = new Picture();
@@ -30,14 +25,14 @@ public class SqlPictureDaoImplTest {
     }
 
     @Test
-    public void create() throws SQLException, ClassNotFoundException, DaoException {
+    public void create() throws DaoException {
         boolean actual = mSqlPictureDao.create(mPicture);
         boolean expected = true;
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void read() throws DaoException, SQLException, ClassNotFoundException {
+    public void read() throws DaoException {
         create();
         Picture actualService = mSqlPictureDao.read("testId");
         Picture expectedService = mPicture;
@@ -46,7 +41,7 @@ public class SqlPictureDaoImplTest {
     }
 
     @Test
-    public void update() throws DaoException, SQLException, ClassNotFoundException {
+    public void update() throws DaoException {
         create();
         Picture updatePicture = new Picture();
         updatePicture.setId("testId");
@@ -58,14 +53,14 @@ public class SqlPictureDaoImplTest {
     }
 
     @Test
-    public void delete() throws SQLException, DaoException {
+    public void delete() throws DaoException {
         int actual = mSqlPictureDao.delete("testId");
         int expected = 1;
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void readAll() throws SQLException, DaoException, ClassNotFoundException {
+    public void readAll() throws DaoException {
         create();
         List<Picture> pictureList = mSqlPictureDao.readAll();
         boolean actual = false;

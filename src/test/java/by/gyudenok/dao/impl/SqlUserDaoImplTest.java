@@ -1,12 +1,13 @@
 package by.gyudenok.dao.impl;
 
-import by.gyudenok.dao.ConnectionPool;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.Role;
 import by.gyudenok.entity.User;
-import org.junit.*;
+import by.gyudenok.exception.DaoException;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class SqlUserDaoImplTest {
@@ -27,14 +28,14 @@ public class SqlUserDaoImplTest {
     }
 
     @Test
-    public void create() throws SQLException {
+    public void create() throws DaoException {
         boolean actual = mSqlUserDao.create(mUser);
         boolean expected = true;
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void read() throws SQLException {
+    public void read() throws DaoException {
         create();
         User actualUser = mSqlUserDao.read("test");
         User expectedUser = mUser;
@@ -43,7 +44,7 @@ public class SqlUserDaoImplTest {
     }
 
     @Test
-    public void update() throws SQLException {
+    public void update() throws DaoException {
         create();
         User updateUser = new User(
                 "test",
@@ -59,7 +60,7 @@ public class SqlUserDaoImplTest {
     }
 
     @Test
-    public void readByLogin() throws SQLException {
+    public void readByLogin() throws DaoException {
         create();
         User actualUser = mSqlUserDao.readByLogin("testLogin");
         User expectedUser = mUser;
@@ -68,7 +69,7 @@ public class SqlUserDaoImplTest {
     }
 
     @Test
-    public void readAll() throws SQLException {
+    public void readAll() throws DaoException {
         create();
         List<User> users = mSqlUserDao.readAll();
         boolean actual = false;
@@ -81,7 +82,7 @@ public class SqlUserDaoImplTest {
     }
 
     @Test
-    public void delete() throws SQLException {
+    public void delete() throws DaoException {
         int actual = mSqlUserDao.delete("test");
         int expected = 1;
         Assert.assertEquals(expected, actual);

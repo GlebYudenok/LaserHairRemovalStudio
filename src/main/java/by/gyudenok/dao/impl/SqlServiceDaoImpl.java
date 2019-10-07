@@ -26,105 +26,139 @@ public class SqlServiceDaoImpl implements ServiceDao {
     private static final String SQL_READ_BY_NAME_QUERY = new String("SELECT *FROM SERVICE WHERE zone_name=?");
 
     @Override
-    public boolean create(Service service) throws ClassNotFoundException, SQLException {
-        PreparedStatement ps = ConnectionPool.getInstance()
-                .getConnection().prepareStatement(SQL_INSERT_QUERY);
-        ps.setString(1, service.getId());
-        ps.setString(2, service.getZoneName());
-        ps.setBigDecimal(3, service.getPrice());
+    public boolean create(Service service) throws DaoException {
+        int code = 0;
+        try {
+            PreparedStatement ps = ConnectionPool.getInstance()
+                    .getConnection().prepareStatement(SQL_INSERT_QUERY);
+            ps.setString(1, service.getId());
+            ps.setString(2, service.getZoneName());
+            ps.setBigDecimal(3, service.getPrice());
 
-        int code = ps.executeUpdate();
-        ps.close();
+            code = ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            throw new DaoException();
+        }
         if(code > 0) {
             LOGGER.info("Service was created successfully!");
             return true;
         }else {
             LOGGER.warn("Cannot insert data");
-            return false;
+            throw new DaoException();
         }
     }
 
     @Override
-    public Service read(String id) throws SQLException {
-        PreparedStatement statement = ConnectionPool.getInstance().
-                getConnection().prepareStatement(SQL_READ_BY_ID_QUERY);
-        statement.setString(1, id);
-        ResultSet resultSet = statement.executeQuery();
+    public Service read(String id) throws DaoException {
+        Service service = null;
+        try {
+            PreparedStatement statement = ConnectionPool.getInstance().
+                    getConnection().prepareStatement(SQL_READ_BY_ID_QUERY);
+            statement.setString(1, id);
+            ResultSet resultSet = statement.executeQuery();
 
-        Service service = new Service();
-        if(resultSet.next()) {
-            service.setId(resultSet.getString("id"));
-            service.setPrice(resultSet.getBigDecimal("price"));
-            service.setZoneName(resultSet.getString("zone_name"));
+            service = new Service();
+            if (resultSet.next()) {
+                service.setId(resultSet.getString("id"));
+                service.setPrice(resultSet.getBigDecimal("price"));
+                service.setZoneName(resultSet.getString("zone_name"));
+            }
+            resultSet.close();
+            statement.close();
+        }catch (SQLException e) {
+            throw new DaoException();
         }
-        resultSet.close();
-        statement.close();
         return service;
     }
 
     @Override
-    public int update(Service entity) throws SQLException {
-        PreparedStatement ps = ConnectionPool.getInstance()
-                .getConnection().prepareStatement(SQL_UPDATE_BY_ID_QUERY);
-        ps.setString(1, entity.getZoneName());
-        ps.setBigDecimal(2, entity.getPrice());
-        ps.setString(3, entity.getId());
-        int code = ps.executeUpdate();
-        if(code > 0) {
-            LOGGER.info("Service was update successful!");
-        }else {
-            LOGGER.info("Service not found or can't update!");
+    public int update(Service entity) throws DaoException {
+        int code = 0;
+        try {
+            PreparedStatement ps = ConnectionPool.getInstance()
+                    .getConnection().prepareStatement(SQL_UPDATE_BY_ID_QUERY);
+            ps.setString(1, entity.getZoneName());
+            ps.setBigDecimal(2, entity.getPrice());
+            ps.setString(3, entity.getId());
+            code = ps.executeUpdate();
+            if (code > 0) {
+                LOGGER.info("Service was update successful!");
+            } else {
+                LOGGER.info("Service not found or can't update!");
+                throw new DaoException();
+            }
+            ps.close();
+        }catch (SQLException e) {
+            throw new DaoException();
         }
-        ps.close();
         return code;
     }
 
 
     @Override
-    public int delete(String id) throws SQLException, DaoException {
-        PreparedStatement ps = ConnectionPool.getInstance()
-                .getConnection().prepareStatement(SQL_DELETE_BY_ID_QUERY);
-        ps.setString(1, id);
+    public int delete(String id) throws DaoException {
+        int code = 0;
+        try {
+            PreparedStatement ps = ConnectionPool.getInstance()
+                    .getConnection().prepareStatement(SQL_DELETE_BY_ID_QUERY);
+            ps.setString(1, id);
 
-        int code = ps.executeUpdate();
-        if (code > 0) {
-            LOGGER.info("Service was delete successfully!");
-        } else {
-            LOGGER.warn("Service not found or can't delete!");
+            code = ps.executeUpdate();
+            if (code > 0) {
+                LOGGER.info("Service was delete successfully!");
+            } else {
+                LOGGER.warn("Service not found or can't delete!");
+                throw new DaoException();
+            }
+            ps.close();
+        }catch (SQLException e) {
+            throw new DaoException();
         }
-        ps.close();
         return code;
     }
 
     @Override
-    public List<Service> readAll() throws SQLException {
-        Statement statement = ConnectionPool.getInstance()
-                .getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(SQL_READ_ALL_QUERY);
-        List<Service> services = new ArrayList<>();
-        while (resultSet.next()) {
-            services.add(new Service(
-                    resultSet.getString("id"),
-                    resultSet.getString("zone_name"),
-                    resultSet.getBigDecimal("price")
-            ));
+    public List<Service> readAll() throws DaoException {
+        List<Service> services = null;
+        try {
+            Statement statement = ConnectionPool.getInstance()
+                    .getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(SQL_READ_ALL_QUERY);
+            services = new ArrayList<>();
+            while (resultSet.next()) {
+                services.add(new Service(
+                        resultSet.getString("id"),
+                        resultSet.getString("zone_name"),
+                        resultSet.getBigDecimal("price")
+                ));
+            }
+            resultSet.close();
+            statement.close();
+        }catch (SQLException e) {
+            throw new DaoException();
         }
-        resultSet.close();
-        statement.close();
         return services;
     }
 
     @Override
-    public Service readByName(String name) throws SQLException {
-        PreparedStatement ps = ConnectionPool.getInstance()
-                .getConnection().prepareStatement(SQL_READ_BY_NAME_QUERY);
-        ps.setString(1, name);
-        ResultSet resultSet = ps.executeQuery();
-        Service service = new Service();
-        if(resultSet.next()) {
-            service.setId(resultSet.getString("id"));
-            service.setZoneName(resultSet.getString("zone_name"));
-            service.setPrice(resultSet.getBigDecimal("price"));
+    public Service readByName(String name) throws DaoException {
+        Service service = null;
+        try {
+            PreparedStatement ps = ConnectionPool.getInstance()
+                    .getConnection().prepareStatement(SQL_READ_BY_NAME_QUERY);
+            ps.setString(1, name);
+            ResultSet resultSet = ps.executeQuery();
+            service = new Service();
+            if (resultSet.next()) {
+                service.setId(resultSet.getString("id"));
+                service.setZoneName(resultSet.getString("zone_name"));
+                service.setPrice(resultSet.getBigDecimal("price"));
+            }
+            resultSet.close();
+            ps.close();
+        }catch (SQLException e) {
+            throw new DaoException();
         }
         return service;
     }
