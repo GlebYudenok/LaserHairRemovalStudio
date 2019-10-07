@@ -2,6 +2,7 @@ package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.ComplexServiceDao;
 import by.gyudenok.dao.ConnectionPool;
+import by.gyudenok.dao.Dao;
 import by.gyudenok.entity.ComplexService;
 import by.gyudenok.entity.Gender;
 import by.gyudenok.exception.DaoException;
@@ -49,7 +50,7 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
             return true;
         }else {
             LOGGER.warn("Cannot insert data");
-            return false;
+            throw new DaoException();
         }
     }
 
@@ -107,6 +108,7 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
                 LOGGER.info("Complex service was successful update!");
             } else {
                 LOGGER.warn("Complex not found or can't update!");
+                throw new DaoException();
             }
             ps.close();
         }catch (SQLException e) {
@@ -127,6 +129,7 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
                 LOGGER.info("Complex was delete successfully!");
             } else {
                 LOGGER.warn("Complex not found or can't delete!");
+                throw new DaoException();
             }
             ps.close();
         }catch (SQLException e) {
@@ -166,7 +169,7 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
 
     @Override
     public ComplexService readByName(String name) throws DaoException {
-        ComplexService service = new ComplexService();
+        ComplexService service = null;
         try {
             PreparedStatement ps = ConnectionPool.getInstance().
                     getConnection().prepareStatement(SQL_READ_BY_NAME);
@@ -175,6 +178,7 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
             ResultSet resultSet = ps.executeQuery();
 
             List<String> serviceList = new ArrayList<>();
+            service = new ComplexService();
 
             while (resultSet.next()) {
                 serviceList.add(resultSet.getString("service_id"));
@@ -186,12 +190,14 @@ public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexServic
                     service.setId(resultSet.getString("id"));
                 }
             }
-
             service.setServiceIds(serviceList);
             resultSet.close();
             ps.close();
         }catch (SQLException e) {
             throw new DaoException();
+        }
+        if (service.getId() == null) {
+            throw new NullPointerException();
         }
         return service;
     }

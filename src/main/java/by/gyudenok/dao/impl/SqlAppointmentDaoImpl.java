@@ -2,6 +2,7 @@ package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.AppointmentDao;
 import by.gyudenok.dao.ConnectionPool;
+import by.gyudenok.dao.Dao;
 import by.gyudenok.entity.Appointment;
 import by.gyudenok.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
@@ -47,7 +48,7 @@ public class SqlAppointmentDaoImpl implements AppointmentDao {
             return true;
         }else {
             LOGGER.warn("Cannot insert data");
-            return false;
+            throw new DaoException();
         }
     }
 
@@ -80,6 +81,9 @@ public class SqlAppointmentDaoImpl implements AppointmentDao {
         } catch (SQLException e) {
             throw new DaoException();
         }
+        if(appointment == null) {
+            throw new DaoException("appointment with this id doesn't exist!");
+        }
         return appointment;
     }
 
@@ -102,6 +106,7 @@ public class SqlAppointmentDaoImpl implements AppointmentDao {
                 LOGGER.info("Appointment was update successfully!");
             } else {
                 LOGGER.warn("Appointment not found or can't update!");
+                throw new DaoException();
             }
             ps.close();
         }catch (SQLException e) {
@@ -122,6 +127,7 @@ public class SqlAppointmentDaoImpl implements AppointmentDao {
                 LOGGER.info("Appointment was delete successfully!");
             } else {
                 LOGGER.warn("Appointment not found or can't delete!");
+                throw new DaoException();
             }
             statement.close();
         } catch (SQLException e) {

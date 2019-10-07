@@ -1,6 +1,7 @@
 package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.ConnectionPool;
+import by.gyudenok.dao.Dao;
 import by.gyudenok.dao.PictureDao;
 import by.gyudenok.entity.Picture;
 import by.gyudenok.exception.DaoException;
@@ -63,6 +64,9 @@ public class SqlPictureDaoImpl implements PictureDao {
             resultSet.close();
             ps.close();
         }catch (SQLException e) {
+            throw new DaoException();
+        }
+        if(picture.getId() == null) {
             throw new DaoException();
         }
         return picture;

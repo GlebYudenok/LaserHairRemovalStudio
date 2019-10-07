@@ -78,6 +78,9 @@ public class SqlUserDaoImpl implements UserDao {
         }catch (SQLException e) {
             throw new DaoException();
         }
+        if(user.getId() == null) {
+            throw new NullPointerException();
+        }
         return user;
     }
 
@@ -181,6 +184,9 @@ public class SqlUserDaoImpl implements UserDao {
             ps.close();
         }catch (SQLException e) {
             throw new DaoException();
+        }
+        if(user.getId() == null) {
+            throw new NullPointerException();
         }
         return user;
     }

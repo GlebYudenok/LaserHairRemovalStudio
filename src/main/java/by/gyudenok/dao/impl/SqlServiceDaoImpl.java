@@ -69,6 +69,9 @@ public class SqlServiceDaoImpl implements ServiceDao {
         }catch (SQLException e) {
             throw new DaoException();
         }
+        if(service.getId() == null) {
+            throw new DaoException();
+        }
         return service;
     }
 
@@ -158,6 +161,9 @@ public class SqlServiceDaoImpl implements ServiceDao {
             resultSet.close();
             ps.close();
         }catch (SQLException e) {
+            throw new DaoException();
+        }
+        if(service.getId() == null) {
             throw new DaoException();
         }
         return service;
