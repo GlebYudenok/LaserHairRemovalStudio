@@ -215,10 +215,6 @@ public class SqlUserDaoImpl implements UserDao {
         }catch (SQLException e) {
             throw new DaoException();
         }
-        if(user.getId() == null) {
-            LOGGER.warn("User not found");
-            throw new NullPointerException();
-        }
         return user;
     }
 }
