@@ -60,4 +60,11 @@ public class UserServiceImplTest {
         boolean expectedValue = true;
         Assert.assertEquals(expectedValue, actualValue);
     }
+
+    @Test
+    public void findById() throws ServiceException {
+        User actual = service.findById("testId");
+        User expected = mUser;
+        Assert.assertEquals(expected, actual);
+    }
 }
