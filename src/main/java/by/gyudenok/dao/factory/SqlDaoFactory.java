@@ -4,7 +4,7 @@ import by.gyudenok.dao.impl.*;
 
 public class SqlDaoFactory {
 
-    private static final SqlDaoFactory instance =
+    private static final SqlDaoFactory INSTANCE =
             new SqlDaoFactory();
 
     private SqlDaoFactory() {
@@ -25,7 +25,7 @@ public class SqlDaoFactory {
             new SqlUserInfoDaoImpl();
 
     public static SqlDaoFactory getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     public SqlAppointmentDaoImpl getSqlAppointmentDao() {
