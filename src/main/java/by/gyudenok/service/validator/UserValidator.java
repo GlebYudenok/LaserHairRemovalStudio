@@ -68,7 +68,7 @@ public class UserValidator {
      *  mk3-4_yong
      * @param username
      */
-    public boolean loginValidator(String username) {
+    private boolean loginValidator(String username) {
         pattern = Pattern.compile(USERNAME_PATTERN);
         matcher = pattern.matcher(username);
         if(matcher.matches()) {
@@ -97,7 +97,7 @@ public class UserValidator {
      *      digit is required
      *      lower case character is required
      **/
-    public boolean passwordValidator(String password) {
+    private boolean passwordValidator(String password) {
         pattern = Pattern.compile(PASSWORD_PATTERN);
         matcher = pattern.matcher(password);
         if(matcher.matches()) {
@@ -136,7 +136,7 @@ public class UserValidator {
      *  double “@” is not allow
      *  email’s tld which has two characters can not contains digit
      */
-    public boolean emailValidator(String email) {
+    private boolean emailValidator(String email) {
         pattern = Pattern.compile(EMAIL_PATTERN);
         matcher = pattern.matcher(email);
         if(matcher.matches()) {
