@@ -142,14 +142,4 @@ public class SqlUserDaoImplTest {
         Assert.assertEquals(mUser, user);
         delete();
     }
-
-    @Test(expected = NullPointerException.class)
-    public void readByLoginNPasswordWithNullArguments() throws DaoException {
-        mSqlUserDao.readByLoginNPassword(null, null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void readByLoginNPasswordWithWrongArguments() throws DaoException {
-        mSqlUserDao.readByLoginNPassword("wrongLogin", "wrongPassword");
-    }
 }
