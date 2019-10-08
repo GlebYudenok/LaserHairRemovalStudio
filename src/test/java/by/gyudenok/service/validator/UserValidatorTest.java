@@ -43,30 +43,33 @@ public class UserValidatorTest {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test(expected = ValidatorException.class)
+    public void validateWrongLoginUser() throws ValidatorException {
+        mUserValidator.validateUser(new User(
+                "testId", "us",
+                "some#Password123", "kek@gmail.ru", Role.ADMIN)
+        );
+    }
+
+    @Test(expected = ValidatorException.class)
+    public void validateWrongPasswordUser() throws ValidatorException {
+        mUserValidator.validateUser(new User(
+                "testId", "userName123",
+                "somepass", "kek@gmail.ru", Role.ADMIN)
+        );
+    }
+
+    @Test(expected = ValidatorException.class)
+    public void validateWrongEmailUser() throws ValidatorException {
+        mUserValidator.validateUser(new User(
+                "testId", "userName123",
+                "somepass", "kekgmail.ru", Role.ADMIN)
+        );
+    }
+
     @Test
     public void validateDelete() throws ValidatorException {
         boolean actual = mUserValidator.validateDelete(1);
-        boolean expected = true;
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void loginValidator() {
-        boolean actual = mUserValidator.loginValidator("username");
-        boolean expected = true;
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void passwordValidator() {
-        boolean actual = mUserValidator.passwordValidator("Some@Pass123");
-        boolean expected = true;
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void emailValidator() {
-        boolean actual = mUserValidator.emailValidator("Vasya99@mail.ru");
         boolean expected = true;
         Assert.assertEquals(expected, actual);
     }
