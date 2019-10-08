@@ -1,5 +1,6 @@
 package by.gyudenok.dao.impl;
 
+import by.gyudenok.dao.Dao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.Role;
 import by.gyudenok.entity.User;
@@ -145,5 +146,10 @@ public class SqlUserDaoImplTest {
     @Test(expected = NullPointerException.class)
     public void readByLoginNPasswordWithNullArguments() throws DaoException {
         mSqlUserDao.readByLoginNPassword(null, null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void readByLoginNPasswordWithWrongArguments() throws DaoException {
+        mSqlUserDao.readByLoginNPassword("wrongLogin", "wrongPassword");
     }
 }
