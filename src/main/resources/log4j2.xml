@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration monitorInterval="3">
 
+<configuration monitorInterval="3">
     <appenders>
         <File name="FILE" fileName="LaserHairRemovalStudio\logs\app.log">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%-5p] %class{36}(%L) in %M() method : %m%n"/>
