@@ -67,8 +67,20 @@ public class UserServiceImpl implements UserService<User> {
     }
 
     @Override
-    public User findById(String id) {
-        return null;
+    public User findById(String id) throws ServiceException {
+        User user = null;
+        UserInfo userInfo = null;
+        try {
+            validator.validateId(id);
+            user = userDao.read(id);
+            userInfo = userInfoDao.read(id);
+            validator.validateUser(user);
+            sUserInfoValidator.validateUserInfo(userInfo);
+        } catch (ValidatorException | DaoException e) {
+            throw new ServiceException(e.getMessage());
+        }
+        user.setUserInfo(userInfo);
+        return user;
     }
 
     @Override
@@ -82,8 +94,23 @@ public class UserServiceImpl implements UserService<User> {
     }
 
     @Override
-    public List<User> getListOfUsers() {
-        return null;
+    public List<User> getListOfUsers() throws ServiceException {
+        List<User> users = null;
+        List<UserInfo> infos = null;
+        try {
+            users = userDao.readAll();
+            infos = userInfoDao.readAll();
+        }catch (DaoException e) {
+            throw new ServiceException(e.getMessage());
+        }
+        for(int i = 0; i < users.size(); i++) {
+            for(int j = 0; j < infos.size(); j++) {
+                if(users.get(j).getId() == infos.get(j).getUserId()) {
+                    users.get(j).setUserInfo(infos.get(j));
+                }
+            }
+        }
+        return users;
     }
 
     @Override
