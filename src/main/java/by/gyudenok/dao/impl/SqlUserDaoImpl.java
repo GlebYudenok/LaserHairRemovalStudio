@@ -26,6 +26,9 @@ public class SqlUserDaoImpl implements UserDao {
     private static final String SQL_UPDATE_BY_ID_QUERY = new String("UPDATE USER SET " +
             "login=?, password=?, email=?, role=? WHERE id=?");
     private static final String SQL_READ_BY_LOGIN_QUERY = new String("SELECT *FROM USER WHERE login=?");
+    private static final String SQL_READ_BY_LOGIN_N_PASSWORD_QUERY = new String(
+            "SELECT *FROM USER WHERE login=? AND password=?"
+    );
 
     @Override
     public boolean create(User user) throws DaoException {
@@ -186,6 +189,34 @@ public class SqlUserDaoImpl implements UserDao {
             throw new DaoException();
         }
         if(user.getId() == null) {
+            throw new NullPointerException();
+        }
+        return user;
+    }
+
+    @Override
+    public User readByLoginNPassword(String login, String password) throws DaoException {
+        User user = null;
+        try {
+            PreparedStatement ps = ConnectionPool.getInstance()
+                    .getConnection().prepareStatement(SQL_READ_BY_LOGIN_N_PASSWORD_QUERY);
+            ps.setString(1, login);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                user = new User(
+                    rs.getString("id"),
+                    rs.getString("login"),
+                    rs.getString("password"),
+                    rs.getString("email"),
+                    Role.valueOf(rs.getString("role").toUpperCase())
+                );
+            }
+        }catch (SQLException e) {
+            throw new DaoException();
+        }
+        if(user.getId() == null) {
+            LOGGER.warn("User not found");
             throw new NullPointerException();
         }
         return user;
