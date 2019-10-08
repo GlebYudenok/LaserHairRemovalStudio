@@ -1,6 +1,5 @@
 package by.gyudenok.dao.impl;
 
-import by.gyudenok.dao.Dao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.*;
 import by.gyudenok.exception.DaoException;

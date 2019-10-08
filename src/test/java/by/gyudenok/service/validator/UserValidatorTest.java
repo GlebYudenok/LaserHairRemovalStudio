@@ -3,14 +3,9 @@ package by.gyudenok.service.validator;
 import by.gyudenok.entity.Role;
 import by.gyudenok.entity.User;
 import by.gyudenok.exception.ValidatorException;
-import by.gyudenok.service.factory.ServiceFactory;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import javax.xml.validation.Validator;
-
-import static org.junit.Assert.*;
 
 public class UserValidatorTest {
 
