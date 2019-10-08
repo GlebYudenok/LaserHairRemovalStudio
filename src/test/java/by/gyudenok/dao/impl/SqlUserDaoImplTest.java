@@ -133,4 +133,17 @@ public class SqlUserDaoImplTest {
     public void readByLoginNotExsistingUser() throws DaoException {
         mSqlUserDao.readByLogin("wrongLogin");
     }
+
+    @Test
+    public void readByLoginNPassword() throws DaoException {
+        create();
+        User user = mSqlUserDao.readByLoginNPassword("testLogin", "testPassword");
+        Assert.assertEquals(mUser, user);
+        delete();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void readByLoginNPasswordWithNullArguments() throws DaoException {
+        mSqlUserDao.readByLoginNPassword(null, null);
+    }
 }
