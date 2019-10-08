@@ -1,7 +1,6 @@
 package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.ConnectionPool;
-import by.gyudenok.dao.Dao;
 import by.gyudenok.dao.UserDao;
 import by.gyudenok.entity.Role;
 import by.gyudenok.entity.User;
@@ -79,10 +78,7 @@ public class SqlUserDaoImpl implements UserDao {
             preparedStatement.close();
             resultSet.close();
         }catch (SQLException e) {
-            throw new DaoException();
-        }
-        if(user.getId() == null) {
-            throw new NullPointerException();
+            throw new DaoException(e.getMessage());
         }
         return user;
     }
@@ -107,7 +103,7 @@ public class SqlUserDaoImpl implements UserDao {
             }
             ps.close();
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException(e.getMessage());
         }
         return code;
     }
@@ -130,7 +126,7 @@ public class SqlUserDaoImpl implements UserDao {
             }
             ps.close();
         }catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException(e.getMessage());
         }
         return code;
     }
@@ -161,7 +157,7 @@ public class SqlUserDaoImpl implements UserDao {
             resultSet.close();
             statement.close();
         }catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException(e.getMessage());
         }
         return userList;
     }
@@ -186,10 +182,7 @@ public class SqlUserDaoImpl implements UserDao {
             resultSet.close();
             ps.close();
         }catch (SQLException e) {
-            throw new DaoException();
-        }
-        if(user.getId() == null) {
-            throw new NullPointerException();
+            throw new DaoException(e.getMessage());
         }
         return user;
     }
@@ -213,7 +206,7 @@ public class SqlUserDaoImpl implements UserDao {
                 );
             }
         }catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException(e.getMessage());
         }
         return user;
     }
