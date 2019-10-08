@@ -1,6 +1,5 @@
 package by.gyudenok.service.impl;
 
-import by.gyudenok.dao.Dao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.dao.impl.SqlUserDaoImpl;
 import by.gyudenok.dao.impl.SqlUserInfoDaoImpl;
@@ -16,7 +15,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
-import by.gyudenok.service.UserService;
 
 public class UserServiceImpl implements UserService<User> {
 
@@ -34,13 +32,13 @@ public class UserServiceImpl implements UserService<User> {
             validator.validateUserLoginNPassword(login, password);
             user = userDao.readByLoginNPassword(login, password);
         }catch (ValidatorException | DaoException e) {
-            throw new ServiceException();
+            throw new ServiceException(e.getMessage());
         }
 
         try {
             validator.validateUser(user);
         } catch (ValidatorException e) {
-            throw new ServiceException();
+            throw new ServiceException(e.getMessage());
         }
         return user;
     }
@@ -54,7 +52,7 @@ public class UserServiceImpl implements UserService<User> {
             validator.validateUser(user);
             sUserInfoValidator.validateUserInfo(userInfo);
         } catch (ValidatorException e) {
-            throw new ServiceException();
+            throw new ServiceException(e.getMessage());
         }
 
         try {
@@ -69,11 +67,6 @@ public class UserServiceImpl implements UserService<User> {
     }
 
     @Override
-    public User findUserByLogin(String login) {
-        return null;
-    }
-
-    @Override
     public User findById(String id) {
         return null;
     }
@@ -83,7 +76,7 @@ public class UserServiceImpl implements UserService<User> {
         try {
             validator.validateDelete(userDao.delete(id));
         }catch (ValidatorException | DaoException e) {
-            throw new ServiceException();
+            throw new ServiceException(e.getMessage());
         }
         return true;
     }
