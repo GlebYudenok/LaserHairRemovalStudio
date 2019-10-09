@@ -1,7 +1,6 @@
 package by.gyudenok.service.validator;
 
 import by.gyudenok.entity.User;
-import by.gyudenok.entity.UserInfo;
 import by.gyudenok.exception.ValidatorException;
 
 import java.util.regex.Matcher;
@@ -148,6 +147,13 @@ public class UserValidator {
     public boolean validateDelete(int code) throws ValidatorException {
         if(code <= 0) {
             throw new ValidatorException("Cannot delete user");
+        }
+        return true;
+    }
+
+    public boolean validateId(String id) throws ValidatorException {
+        if(id == null) {
+            throw new ValidatorException();
         }
         return true;
     }
