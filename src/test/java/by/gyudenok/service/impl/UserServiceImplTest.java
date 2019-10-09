@@ -9,6 +9,7 @@ import by.gyudenok.exception.DaoException;
 import by.gyudenok.exception.ServiceException;
 import by.gyudenok.service.UserService;
 import by.gyudenok.service.factory.ServiceFactory;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -66,5 +67,26 @@ public class UserServiceImplTest {
         User actual = service.findById("testId");
         User expected = mUser;
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getListOfUsers() throws ServiceException {
+        int size = service.getListOfUsers().size();
+        boolean actual = false;
+        if(size > 0) {
+            actual = true;
+        }
+        Assert.assertTrue(actual);
+    }
+
+    @Test
+    public void editUser() throws ServiceException {
+        User newUser = new User("testId", "testLogin", "testP@ssword890",
+                "testMail@gmail.com", Role.ADMIN);
+        UserInfo newUserInfo = new UserInfo("newAvatar",
+                "testId", "testName", "testSurname", Calendar.getInstance(),
+                "+375336688241", Gender.OTHER);
+        boolean actual = service.editProfile(newUser, newUserInfo);
+        Assert.assertTrue(actual);
     }
 }
