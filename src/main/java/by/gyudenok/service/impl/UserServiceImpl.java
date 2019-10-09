@@ -1,8 +1,8 @@
 package by.gyudenok.service.impl;
 
+import by.gyudenok.dao.UserDao;
+import by.gyudenok.dao.UserInfoDao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
-import by.gyudenok.dao.impl.SqlUserDaoImpl;
-import by.gyudenok.dao.impl.SqlUserInfoDaoImpl;
 import by.gyudenok.entity.User;
 import by.gyudenok.entity.UserInfo;
 import by.gyudenok.exception.DaoException;
@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService<User> {
 
     private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
     private static final SqlDaoFactory factory = SqlDaoFactory.getInstance();
-    private static final SqlUserDaoImpl userDao = factory.getSqlUserDao();
-    private static final SqlUserInfoDaoImpl userInfoDao = factory.getSqlUserInfoDao();
+    private static final UserDao<User> userDao = factory.getSqlUserDao();
+    private static final UserInfoDao<UserInfo> userInfoDao = factory.getSqlUserInfoDao();
     private static UserValidator validator = new UserValidator();
     private static UserInfoValidator sUserInfoValidator = new UserInfoValidator();
 
@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService<User> {
         } catch (ValidatorException e) {
             throw new ServiceException(e.getMessage());
         }
+        LOGGER.info("Sign in successfully!");
         return user;
     }
 
@@ -63,6 +64,7 @@ public class UserServiceImpl implements UserService<User> {
         }
         registredUser = user;
         registredUser.setUserInfo(userInfo);
+        LOGGER.info("Sign up successfully!");
         return user;
     }
 
@@ -80,6 +82,7 @@ public class UserServiceImpl implements UserService<User> {
             throw new ServiceException(e.getMessage());
         }
         user.setUserInfo(userInfo);
+        LOGGER.info("User was found successfully!");
         return user;
     }
 
@@ -90,6 +93,7 @@ public class UserServiceImpl implements UserService<User> {
         }catch (ValidatorException | DaoException e) {
             throw new ServiceException(e.getMessage());
         }
+        LOGGER.info("User was delete successfully!");
         return true;
     }
 
@@ -114,7 +118,14 @@ public class UserServiceImpl implements UserService<User> {
     }
 
     @Override
-    public boolean editProfile(User user, UserInfo userInfo) {
-        return false;
+    public boolean editProfile(User user, UserInfo userInfo) throws ServiceException {
+        try {
+            validator.validateUser(user);
+            sUserInfoValidator.validateUserInfo(userInfo);
+        } catch (ValidatorException e) {
+            throw new ServiceException(e.getMessage());
+        }
+        LOGGER.info("User was updated successfully!");
+        return true;
     }
 }
