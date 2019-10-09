@@ -21,6 +21,7 @@ public class PictureServiceImpl implements PictureService<Picture> {
     @Override
     public boolean addPictureToGalery(Picture picture) throws ServiceException {
         try {
+            validator.validateNullPicture(picture);
             validator.validateNull(picture.getLink());
             validator.validateNull(picture.getId());
             pictureDao.create(picture);
