@@ -1,5 +1,6 @@
 package by.gyudenok.dao.impl;
 
+import by.gyudenok.dao.UserInfoDao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.Gender;
 import by.gyudenok.entity.Role;
@@ -17,7 +18,7 @@ import java.util.List;
 public class SqlUserInfoDaoImplTest {
 
     SqlDaoFactory factory = SqlDaoFactory.getInstance();
-    SqlUserInfoDaoImpl mSqlUserInfoDao = factory.getSqlUserInfoDao();
+    UserInfoDao<UserInfo> mSqlUserInfoDao = factory.getSqlUserInfoDao();
     static UserInfo mUserInfo = null;
     static User mTestUser = null;
 

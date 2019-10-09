@@ -1,5 +1,6 @@
 package by.gyudenok.dao.impl;
 
+import by.gyudenok.dao.UserDao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.Role;
 import by.gyudenok.entity.User;
@@ -14,7 +15,7 @@ public class SqlUserDaoImplTest {
 
     User mUser = null;
     SqlDaoFactory mSqlDaoFactory = null;
-    SqlUserDaoImpl mSqlUserDao = null;
+    UserDao<User> mSqlUserDao = null;
 
     @Before
     public void setUp() {
@@ -94,11 +95,6 @@ public class SqlUserDaoImplTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void readWithNullArguments() throws DaoException {
-        mSqlUserDao.read(null);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void updateWithNullArguments() throws DaoException {
         mSqlUserDao.update(null);
     }
@@ -106,16 +102,6 @@ public class SqlUserDaoImplTest {
     @Test(expected = DaoException.class)
     public void deleteWithNullArguments() throws DaoException {
         mSqlUserDao.delete(null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void readByLoginWithNullArguments() throws DaoException {
-        mSqlUserDao.readByLogin(null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void readNotExsistingUser() throws DaoException {
-        mSqlUserDao.read("wrongId");
     }
 
     @Test(expected = DaoException.class)
@@ -127,11 +113,6 @@ public class SqlUserDaoImplTest {
     @Test(expected = DaoException.class)
     public void deleteNotExsistingUser() throws DaoException {
         mSqlUserDao.delete("wrongID");
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void readByLoginNotExsistingUser() throws DaoException {
-        mSqlUserDao.readByLogin("wrongLogin");
     }
 
     @Test

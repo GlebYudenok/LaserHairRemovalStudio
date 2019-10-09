@@ -1,5 +1,6 @@
 package by.gyudenok.dao.impl;
 
+import by.gyudenok.dao.ServiceDao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.Service;
 import by.gyudenok.exception.DaoException;
@@ -13,7 +14,7 @@ import java.util.List;
 public class SqlServiceDaoImplTest {
 
     SqlDaoFactory mSqlDaoFactory = null;
-    SqlServiceDaoImpl mSqlServiceDao = null;
+    ServiceDao<Service> mSqlServiceDao = null;
     Service mService = null;
 
     @Before

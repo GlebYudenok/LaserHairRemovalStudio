@@ -1,5 +1,7 @@
 package by.gyudenok.dao.impl;
 
+import by.gyudenok.dao.ComplexServiceDao;
+import by.gyudenok.dao.ServiceDao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.ComplexService;
 import by.gyudenok.entity.Gender;
@@ -17,12 +19,12 @@ import java.util.List;
 public class SqlComplexServiceDaoImplTest {
 
     SqlDaoFactory mSqlDaoFactory = null;
-    SqlComplexServiceDaoImpl mSqlComplexServiceDao = null;
+    ComplexServiceDao<ComplexService> mSqlComplexServiceDao = null;
     ComplexService mComplexService = null;
 
     static Service mService = null;
     static SqlDaoFactory sSqlDaoFactory = SqlDaoFactory.getInstance();
-    static SqlServiceDaoImpl sSqlServiceDao = sSqlDaoFactory.getSqlServiceDao();
+    static ServiceDao sSqlServiceDao = sSqlDaoFactory.getSqlServiceDao();
 
     @BeforeClass
     public static void init() throws DaoException {

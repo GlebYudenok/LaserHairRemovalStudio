@@ -1,5 +1,7 @@
 package by.gyudenok.dao.impl;
 
+import by.gyudenok.dao.AppointmentDao;
+import by.gyudenok.dao.ComplexServiceDao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.*;
 import by.gyudenok.exception.DaoException;
@@ -17,7 +19,7 @@ public class SqlAppointmentDaoImplTest {
 
     Appointment mAppointment = null;
     SqlDaoFactory mSqlDaoFactory = null;
-    SqlAppointmentDaoImpl mSqlAppointmentDao = null;
+    AppointmentDao<Appointment> mSqlAppointmentDao = null;
 
     static User sUser = null;
     static Service sService = null;
@@ -45,7 +47,8 @@ public class SqlAppointmentDaoImplTest {
         sComplexService.setPrice(new BigDecimal(213));
         sComplexService.setComplexName("testName");
         sComplexService.setId("testId");
-        SqlDaoFactory.getInstance().getSqlComplexServiceDao().create(sComplexService);
+        ComplexServiceDao<ComplexService> csDao = SqlDaoFactory.getInstance().getSqlComplexServiceDao();
+        csDao.create(sComplexService);
         SqlDaoFactory.getInstance().getSqlUserDao().create(sUser);
 
         sService.setId("testId2");

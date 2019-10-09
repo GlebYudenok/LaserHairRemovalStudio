@@ -1,5 +1,6 @@
 package by.gyudenok.dao.impl;
 
+import by.gyudenok.dao.PictureDao;
 import by.gyudenok.dao.factory.SqlDaoFactory;
 import by.gyudenok.entity.Picture;
 import by.gyudenok.exception.DaoException;
@@ -12,11 +13,11 @@ import java.util.List;
 public class SqlPictureDaoImplTest {
 
     SqlDaoFactory mSqlDaoFactory = null;
-    SqlPictureDaoImpl mSqlPictureDao = null;
+    PictureDao<Picture> mSqlPictureDao = null;
     Picture mPicture = null;
 
     @Before
-    public void setUp() throws DaoException {
+    public void setUp() {
         mSqlDaoFactory = SqlDaoFactory.getInstance();
         mSqlPictureDao = mSqlDaoFactory.getSqlPictureDao();
         mPicture = new Picture();
