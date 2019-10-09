@@ -1,7 +1,6 @@
 package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.ConnectionPool;
-import by.gyudenok.dao.Dao;
 import by.gyudenok.dao.PictureDao;
 import by.gyudenok.entity.Picture;
 import by.gyudenok.exception.DaoException;
@@ -15,7 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlPictureDaoImpl implements PictureDao {
+public class SqlPictureDaoImpl implements PictureDao<Picture> {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlPictureDaoImpl.class);
     private static final String SQL_INSERT_QUERY = new String("INSERT INTO pictures (id, link) VALUES (?, ?)");

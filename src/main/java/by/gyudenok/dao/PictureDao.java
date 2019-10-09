@@ -5,6 +5,6 @@ import by.gyudenok.exception.DaoException;
 
 import java.util.List;
 
-public interface PictureDao extends Dao<Picture> {
-    List<Picture> readAll() throws DaoException;
+public interface PictureDao<T> extends Dao<Picture> {
+    List<T> readAll() throws DaoException;
 }

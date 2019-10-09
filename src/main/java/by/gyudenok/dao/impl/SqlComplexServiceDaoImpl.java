@@ -2,7 +2,6 @@ package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.ComplexServiceDao;
 import by.gyudenok.dao.ConnectionPool;
-import by.gyudenok.dao.Dao;
 import by.gyudenok.entity.ComplexService;
 import by.gyudenok.entity.Gender;
 import by.gyudenok.exception.DaoException;
@@ -16,7 +15,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlComplexServiceDaoImpl implements ComplexServiceDao<ComplexService> {
+public class SqlComplexServiceDaoImpl<T> implements ComplexServiceDao<ComplexService> {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlComplexServiceDaoImpl.class);
     private static final String SQL_INSERT_QUERY = new String("INSERT INTO COMPLEX_SERVICE (id, service_id, price, name, user_gender) " +

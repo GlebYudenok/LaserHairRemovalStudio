@@ -5,6 +5,6 @@ import by.gyudenok.exception.DaoException;
 
 import java.util.List;
 
-public interface AppointmentDao extends Dao<Appointment> {
-    List<Appointment> readAll() throws DaoException;
+public interface AppointmentDao<T> extends Dao<Appointment> {
+    List<T> readAll() throws DaoException;
 }

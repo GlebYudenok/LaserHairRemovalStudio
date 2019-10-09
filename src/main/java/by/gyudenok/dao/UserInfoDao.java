@@ -5,7 +5,7 @@ import by.gyudenok.exception.DaoException;
 
 import java.util.List;
 
-public interface UserInfoDao extends Dao<UserInfo> {
-    List<UserInfo> readAll() throws DaoException;
-    UserInfo readByName(String name, String surname) throws DaoException;
+public interface UserInfoDao<T> extends Dao<UserInfo> {
+    List<T> readAll() throws DaoException;
+    T readByName(String name, String surname) throws DaoException;
 }

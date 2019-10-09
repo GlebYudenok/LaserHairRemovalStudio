@@ -5,7 +5,7 @@ import by.gyudenok.exception.DaoException;
 
 import java.util.List;
 
-public interface ServiceDao extends Dao<Service> {
-    List<Service> readAll() throws DaoException;
-    Service readByName(String name) throws DaoException;
+public interface ServiceDao<T> extends Dao<Service> {
+    List<T> readAll() throws DaoException;
+    T readByName(String name) throws DaoException;
 }

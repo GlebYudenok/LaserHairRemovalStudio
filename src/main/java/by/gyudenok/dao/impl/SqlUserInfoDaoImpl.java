@@ -14,7 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class SqlUserInfoDaoImpl implements UserInfoDao {
+public class SqlUserInfoDaoImpl implements UserInfoDao<UserInfo> {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlUserInfoDaoImpl.class);
     private static final String SQL_INSERT_QUERY = new String("INSERT INTO USER_INFO " +

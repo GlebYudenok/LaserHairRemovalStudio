@@ -2,7 +2,6 @@ package by.gyudenok.dao.impl;
 
 import by.gyudenok.dao.AppointmentDao;
 import by.gyudenok.dao.ConnectionPool;
-import by.gyudenok.dao.Dao;
 import by.gyudenok.entity.Appointment;
 import by.gyudenok.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class SqlAppointmentDaoImpl implements AppointmentDao {
+public class SqlAppointmentDaoImpl implements AppointmentDao<Appointment> {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlAppointmentDaoImpl.class);
     private static final String SQL_INSERT_QUERY = new String("INSERT INTO APPOINTMENT (id, date_n_time," +

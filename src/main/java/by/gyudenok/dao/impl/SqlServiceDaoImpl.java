@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlServiceDaoImpl implements ServiceDao {
+public class SqlServiceDaoImpl implements ServiceDao<Service> {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlServiceDaoImpl.class);
     private static final String SQL_INSERT_QUERY = new String("INSERT INTO SERVICE (" +

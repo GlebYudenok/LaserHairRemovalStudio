@@ -15,7 +15,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlUserDaoImpl implements UserDao {
+public class SqlUserDaoImpl implements UserDao<User> {
 
     private static final Logger LOGGER = LogManager.getLogger(SqlUserDaoImpl.class);
     private static final String SQL_INSERT_QUERY = new String("INSERT INTO USER " +
